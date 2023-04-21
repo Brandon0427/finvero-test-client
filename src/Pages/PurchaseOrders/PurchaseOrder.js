@@ -154,13 +154,15 @@ else{
 
 const PurchaseOrder = () => {
 
+    const [addNewPO, setAddNewPO] = useState(false);
+
     const [startPODisplay, setStartPODisplay] = useState(arrayPositionStart);
     const [prevButton, setPrevButton] = useState(false);
     const [endPODisplay, setEndPODisplay] = useState(arrayPositionEnd);
     const [nextButton, setNextButton] = useState(nextButtonStart);
     const [addDeleteButtons, setAddDeleteButtons] = useState(false);
     const [dataLength, setDataLength] = useState(data.length);
-    const [addNewPO, setAddNewPO] = useState(false);
+    
 
     const [modal_list, setmodal_list] = useState(false);
     const [drp_secondary_sm, setDrp_secondary_sm] = useState(false);
@@ -391,7 +393,7 @@ const PurchaseOrder = () => {
                                                             onClick={() => notifyDelete(0, true)}>
                                                             <i className="ri-delete-bin-2-line"></i>
                                                         </Button> :
-                                                        <Button color="success" className="add-btn" id="create-btn">
+                                                        <Button color="success" className="add-btn" id="create-btn" onClick={() => setAddNewPO(true)}>
                                                             <i className="ri-add-line align-bottom me-1"></i>Add
                                                         </Button>
                                                     }
@@ -561,7 +563,7 @@ const PurchaseOrder = () => {
                                                     ""
                                                 }
                                                 
-                                                <ul className="pagination listjs-pagination mb-0"></ul>
+                                                {/* <ul className="pagination listjs-pagination mb-0"></ul> */}
 
                                                 {nextButton ? 
                                                     <Button className="btn-outline-success" color="white" opacity={0} onClick={() => nextPO()}>
@@ -569,37 +571,33 @@ const PurchaseOrder = () => {
                                                     </Button> :
                                                     ""
                                                 }
+
+                                                {addNewPO ? 
+                                                    <AlertAddPO /> :
+                                                    ""
+                                                }
                                                 
                                             </div>
                                         </div>
                                     </div>
-                                    
-
-                                    <div className="d-flex">
-                                        <AlertAddPO />
-                                    </div>
 
                             </Col>
-                        </Row>
-
-                        
+                        </Row> 
 
                     </CardBody>
-                    
-                    
-                    
+                                     
                     <ToastContainer
-                                        position="top-right"
-                                        autoClose={3000}
-                                        hideProgressBar={false}
-                                        newestOnTop
-                                        closeOnClick
-                                        rtl={false}
-                                        pauseOnFocusLoss
-                                        draggable
-                                        pauseOnHover
-                                        theme="light"
-                                    />
+                        position="top-right"
+                        autoClose={3000}
+                        hideProgressBar={false}
+                        newestOnTop
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                        theme="light"
+                        />
                 </Card>
 
                 

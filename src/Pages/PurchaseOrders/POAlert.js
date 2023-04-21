@@ -1,4 +1,4 @@
-import {CardBody, UncontrolledAlert, Col, Row} from "reactstrap";
+import {Col, Row, Modal, ModalHeader, ModalBody} from "reactstrap";
 import React, {useState} from 'react';
 
 const currentDate = new Date();
@@ -35,6 +35,8 @@ const AlertAddPO = () => {
 
     const [activeConfirmButton, setActiveConfirmButton] = useState(false);
     const [activeSubmitButton, setActiveSubmitButton] = useState(false);
+
+    const [modal, setmodal] = useState(true);
 
     const handleInputChange = (event) => {
         textValue = event.target.value;
@@ -130,31 +132,43 @@ const AlertAddPO = () => {
     }
 
     return (
-            <form>
-            <Col lg={6}>
-                <UncontrolledAlert color="light" role="alert" className="card border p-0 mb-0">
-                    <div className="card-header bg-soft-success">
-                        <div className="d-flex">
-                            <div className="flex-grow-1">
-                                <h5 className="font-size-16 text-success my-1">
-                                    Add New Purchase Order
-                                </h5>
-                            </div>
-                            <div className="flex-shrink-0">
+            
+        <Col lg={6}>
+        <Modal
+            size="lg"
+            isOpen={modal}
+            toggle={() => {
+                setmodal(!modal);
+            }}
+        >
+            <ModalHeader
+                toggle={() => {
+                    setmodal(!modal);
+                }}
+                className="bg-soft-success card-header"
+            >
 
-                            </div>
-                        </div>
+                <div className="d-flex">
+                    <div className="flex-grow-1">
+                        <h5 className="font-size-16 text-success my-1">
+                            Add New Purchase Order
+                        </h5>
                     </div>
+                    <div className="flex-shrink-0">
 
-                    <CardBody>
-                        <div className="text-center">
-                            <div className="mb-6">
-                                <i className="mdi mdi mdi-basket-outline display-4 text-success"></i>
-                            </div>
-                            <h4 className="alert-heading">Please provide the following details:</h4>
-                            <br />
-                            <div>
-                                <Row className="mb-3">
+                    </div>
+                </div>
+
+            </ModalHeader>
+            <ModalBody>
+                <div className="text-center">
+                    <div className="mb-6">
+                        <i className="mdi mdi mdi-basket-outline display-4 text-success"></i>
+                    </div>
+                    <h4 className="alert-heading">Please provide the following details:</h4>
+                        <br />
+                        <div>
+                            <Row className="mb-3">
                                     <label
                                         htmlFor="example-date-input"
                                         className="col-md-2 col-form-label"
@@ -339,15 +353,13 @@ const AlertAddPO = () => {
                                     
                                 </Row>
                                       
-                            </div>
                         </div>
-                    </CardBody>
-                </UncontrolledAlert>
-            </Col>
-        </form>
+                    </div>
+            </ModalBody>
+        </Modal>                             
+    </Col>     
     )
 
 }
-
 
 export default AlertAddPO;
