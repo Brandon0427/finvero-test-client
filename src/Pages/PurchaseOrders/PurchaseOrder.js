@@ -572,10 +572,10 @@ const PurchaseOrder = () => {
                                                     ""
                                                 }
 
-                                                {addNewPO ? 
-                                                    <AlertAddPO /> :
-                                                    ""
-                                                }
+                                                {/* {addNewPO ? <AlertAddPO showPopUp={true}/> : ""} */}
+
+                                                <AlertAddPO/>
+                                                
                                                 
                                             </div>
                                         </div>
