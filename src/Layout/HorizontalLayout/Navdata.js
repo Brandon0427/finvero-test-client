@@ -79,6 +79,10 @@ const Navdata = () => {
       currentState: app,
       subItems: [
         {
+          label2: "Purchase Orders",
+          url: "/purchase-orders",
+        },
+        {
           label2: "Calendar",
           url: "/calendar",
         },

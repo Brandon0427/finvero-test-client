@@ -10,7 +10,7 @@ const Footer = () => {
             <Col sm={6}>{new Date().getFullYear()} © Optioutlet.</Col>
             <Col sm={6}>
               <div className="text-sm-end d-none d-sm-block">
-                Developed by brandonaj.dev
+                Developed by <a href={"https://www.brandonaj.dev"}>brandonaj.dev</a>
               </div>
             </Col>
           </Row>
