@@ -18,11 +18,11 @@ import logolight from '../../assets/images/logo-light.png';
 import logodark from '../../assets/images/logo-dark.png';
 
 const Register = props => {
-    document.title = "Register | Upzet - React Admin & Dashboard Template";
+    document.title = "Register | Optioutlet";
 
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-  const validation = useFormik({
+    const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
 

@@ -1,5 +1,10 @@
 import React, { useState} from 'react';
 import { Link } from 'react-router-dom';
+// action
+import { openAddPOType } from "../../store/actions";
+
+//redux
+import { useSelector, useDispatch } from "react-redux";
 
 import {
     Button,
@@ -154,7 +159,11 @@ else{
 
 const PurchaseOrder = () => {
 
-    const [addNewPO, setAddNewPO] = useState(false);
+    const showAddalert = useSelector(state => (state.POAlert.addPOisOpen));
+    // const {showAddalert} = useSelector(state => state.addPOisOpen)
+    const dispatch = useDispatch();
+
+    // const [addNewPO, setAddNewPO] = useState(false);
 
     const [startPODisplay, setStartPODisplay] = useState(arrayPositionStart);
     const [prevButton, setPrevButton] = useState(false);
@@ -393,7 +402,13 @@ const PurchaseOrder = () => {
                                                             onClick={() => notifyDelete(0, true)}>
                                                             <i className="ri-delete-bin-2-line"></i>
                                                         </Button> :
-                                                        <Button color="success" className="add-btn" id="create-btn" onClick={() => setAddNewPO(true)}>
+                                                        <Button 
+                                                            color="success" 
+                                                            className="add-btn" 
+                                                            id="create-btn"
+                                                            onClick={() => dispatch(openAddPOType(!showAddalert))}
+                                                            >
+                                                            
                                                             <i className="ri-add-line align-bottom me-1"></i>Add
                                                         </Button>
                                                     }
@@ -575,8 +590,7 @@ const PurchaseOrder = () => {
                                                 {/* {addNewPO ? <AlertAddPO showPopUp={true}/> : ""} */}
 
                                                 <AlertAddPO/>
-                                                
-                                                
+                                                                                            
                                             </div>
                                         </div>
                                     </div>

@@ -1,5 +1,9 @@
 import {Col, Row, Modal, ModalHeader, ModalBody} from "reactstrap";
 import React, {useState} from 'react';
+//redux
+import { useSelector, useDispatch } from "react-redux";
+import { openAddPOType } from "../../store/actions";
+
 
 const currentDate = new Date();
 
@@ -23,6 +27,8 @@ let confirmButton = false;
 let requiredValuesFilled = [false, false, false, false, true];
 
 const AlertAddPO = () => {
+    const showAddalert = useSelector(state => (state.POAlert.addPOisOpen));
+    const dispatch = useDispatch();
 
     const [poCreatorInput, setPOCreatorInput] = useState("");
     const [poStatusInput, setPOStatusInput] = useState("");
@@ -35,8 +41,6 @@ const AlertAddPO = () => {
 
     const [activeConfirmButton, setActiveConfirmButton] = useState(false);
     const [activeSubmitButton, setActiveSubmitButton] = useState(false);
-
-    const [modal, setmodal] = useState(true);
 
     const handleInputChange = (event) => {
         textValue = event.target.value;
@@ -136,15 +140,13 @@ const AlertAddPO = () => {
         <Col lg={6}>
         <Modal
             size="lg"
-            isOpen={modal}
-            toggle={() => {
-                setmodal(!modal);
-            }}
+            isOpen={showAddalert}
+            toggle={() => dispatch(openAddPOType(!showAddalert))}
         >
             <ModalHeader
-                toggle={() => {
-                    setmodal(!modal);
-                }}
+                toggle={() => dispatch(openAddPOType(!showAddalert))}
+
+                // setmodal(!modal);
                 className="bg-soft-success card-header"
             >
 
