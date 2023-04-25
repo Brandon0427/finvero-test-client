@@ -17,7 +17,8 @@ import {
     DropdownItem,
     DropdownToggle,
     ButtonDropdown,
-    Row
+    Row,
+    Spinner
 } from "reactstrap";
 
 import {ToastContainer, toast} from 'react-toastify';
@@ -25,157 +26,45 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import AlertAddPO from './POAlert.js'
 
-
-const data = [
-    {
-        poID: 1,
-        supplier: "AOHSSA",
-        title: "Soflens 59",
-        description: "1000 Soflens",
-        poCreator: "Iván N.",
-        poDate: "18-04-2021",
-        poStatus: "Ordered",
-        checkedItem: false
-    },
-    {
-        poID: 2,
-        supplier: "AOHSSA",
-        title: "Dailies",
-        description: "700 Dailies",
-        poCreator: "José L. N.",
-        poDate: "25-12-2021",
-        poStatus: "Approved",
-        checkedItem: false
-    },
-    {
-        poID: 3,
-        supplier: "AOHSSA",
-        title: "Freshlook Colorblends",
-        description: "3000 FL",
-        poCreator: "Luis N.",
-        poDate: "28-12-2021",
-        poStatus: "Cancelled",
-        checkedItem: false
-    },
-    {
-        poID: 4,
-        supplier: "AOHSSA",
-        title: "Soflens Astigmatismo",
-        description: "76 Soflens",
-        poCreator: "Iván N.",
-        poDate: "03-01-2022",
-        poStatus: "Requested",
-        checkedItem: false
-    },
-    {
-        poID: 5,
-        supplier: "AOHSSA",
-        title: "B&L Ultra",
-        description: "54 Lentes",
-        poCreator: "José M. H.",
-        poDate: "26-01-2022",
-        poStatus: "Approved",
-        checkedItem: false
-    },
-    {
-        poID: 6,
-        supplier: "AOHSSA",
-        title: "Armazón",
-        description: "25 Blanco con Negro",
-        poCreator: "Blanca J.",
-        poDate: "06-02-2022",
-        poStatus: "Waiting",
-        checkedItem: false
-    },
-    {
-        poID: 7,
-        supplier: "AOHSSA",
-        title: "Ocudrive",
-        description: "230 Vitaminas",
-        poCreator: "José L. N.",
-        poDate: "12-02-2022",
-        poStatus: "Cancelled",
-        checkedItem: false
-    },
-    {
-        poID: 8,
-        supplier: "AOHSSA",
-        title: "Freslook Colorblends",
-        description: "74 Lentes Azules",
-        poCreator: "Iván N.",
-        poDate: "16-04-2022",
-        poStatus: "Approved",
-        checkedItem: false
-    },
-    {
-        poID: 9,
-        supplier: "AOHSSA",
-        title: "Armazón",
-        description: "76 Carey",
-        poCreator: "José M. H.",
-        poDate: "29-06-2022",
-        poStatus: "Delivered",
-        checkedItem: false
-    },
-    {
-        poID: 10,
-        supplier: "AOHSSA",
-        title: "Acuvue Oasys",
-        description: "26 Acuvue",
-        poCreator: "Iván N.",
-        poDate: "4-09-2022",
-        poStatus: "Ordered",
-        checkedItem: false
-    },
-    {
-        poID: 11,
-        supplier: "AOHSSA",
-        title: "Air Optix",
-        description: "100 Air Optix",
-        poCreator: "Iván N.",
-        poDate: "10-10-2022",
-        poStatus: "Approved",
-        checkedItem: false
-    }
-]
+let data = []
 
 let listElements = 5;
 let arrayPositionStart = 0;
 let nextButtonStart;
-let arrayPositionEnd = data.length;
-let numPODisplay = data.length;
+let arrayPositionEnd = 0;
+let numPODisplay = 0;
 let selectAllItems = false;
 let textToastify = "";
 let multipleDataSelected = [];
 let anyDataSelected = false;
 let anyMultipleDataSelected = [];
 
-if(data.length > listElements){
-    nextButtonStart = true;
-    arrayPositionEnd = listElements;
-    numPODisplay = listElements;
-}
-else{
-    nextButtonStart = false;
-}
+// if(data.length > listElements){
+//     nextButtonStart = true;
+//     arrayPositionEnd = listElements;
+//     numPODisplay = listElements;
+// }
+// else{
+//     nextButtonStart = false;
+// }
 
 const PurchaseOrder = () => {
 
+    //Redux variables and processes
     const showAddalert = useSelector(state => (state.POAlert.addPOisOpen));
-    // const {showAddalert} = useSelector(state => state.addPOisOpen)
     const dispatch = useDispatch();
 
-    // const [addNewPO, setAddNewPO] = useState(false);
+    //Purchase Orders fetch Data States
+    const [dataPurchaseOrders, setDataPurchaseOrders] = useState();
+    const [isLoading, setisLoading] = useState(true);
 
+    //Inner Components States
     const [startPODisplay, setStartPODisplay] = useState(arrayPositionStart);
     const [prevButton, setPrevButton] = useState(false);
     const [endPODisplay, setEndPODisplay] = useState(arrayPositionEnd);
     const [nextButton, setNextButton] = useState(nextButtonStart);
     const [addDeleteButtons, setAddDeleteButtons] = useState(false);
     const [dataLength, setDataLength] = useState(data.length);
-
-    const [dataPurchaseOrders, setDataPurchaseOrders] = useState();
-    const [isLoading, setisLoading] = useState(true);
 
     const [modal_list, setmodal_list] = useState(false);
     const [drp_secondary_sm, setDrp_secondary_sm] = useState(false);
@@ -186,12 +75,16 @@ const PurchaseOrder = () => {
 
             const responseDataPurchaseOrders = await axios.get("https://mongodb-api-optidashboard.herokuapp.com/purchase-order");
             setDataPurchaseOrders(responseDataPurchaseOrders.data);
-            console.log(dataPurchaseOrders);
+            data = []
+            data = responseDataPurchaseOrders;
 
+            arrayPositionEnd = data.length;
+            numPODisplay = data.length;
+
+            await resetValues(true);
             setisLoading(false);
         }
         fetchData();
-        console.log(dataPurchaseOrders);
         
     }, [])
 
@@ -340,12 +233,17 @@ const PurchaseOrder = () => {
     }
 
     async function deleteData(dataIndex){
-        data.splice(dataIndex, 1);
+        await axios.delete('https://mongodb-api-optidashboard.herokuapp.com/purchase-order/' + data[dataIndex]._id)
+
+        const responseDataPurchaseOrders = await axios.get("https://mongodb-api-optidashboard.herokuapp.com/purchase-order");
+        setDataPurchaseOrders(responseDataPurchaseOrders.data);
+        data = []
+        data = responseDataPurchaseOrders;
+
         await resetValues(true);
     }      
 
     async function readAllSelected(deleteProcess){
-        // anyMultipleDataSelected = [];
 
         for (let i=arrayPositionStart; i < numPODisplay; i++){
             if(data[i].checkedItem){
@@ -407,6 +305,14 @@ const PurchaseOrder = () => {
                                 style={{ width: "auto", height: "auto", fontSize: 20, padding: 0}}
                             ></i>
                         </Row>
+
+                        {/* <Row>
+                            <div className="d-flex flex-column gap-3">
+                                <Spinner color="primary" size="sm">
+                                    Loading...
+                                </Spinner>
+                            </div>
+                        </Row> */}
 
                         <Row>
                             <Col lg={12}>
@@ -573,7 +479,20 @@ const PurchaseOrder = () => {
                                                         </tr>
 
                                                     ))}     
-            
+                                                    
+
+                                                    {isLoading ? 
+                                                        <td>
+                                                            <div>
+                                                                <Spinner color="primary" size="sm">
+                                                                    Loading...
+                                                                </Spinner>
+                                                            </div>
+                                                        </td> 
+                                                        : ""}
+                                                        
+
+
                                                 </tbody>
                                             </table>
                                             {/* <div className="noresult" >
