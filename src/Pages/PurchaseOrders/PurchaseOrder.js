@@ -1,5 +1,7 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import env from "react-dotenv";
 // action
 import { openAddPOType } from "../../store/actions";
 
@@ -31,7 +33,7 @@ const data = [
         title: "Soflens 59",
         description: "1000 Soflens",
         poCreator: "Iván N.",
-        poDate: "18 Apr. 2021",
+        poDate: "18-04-2021",
         poStatus: "Ordered",
         checkedItem: false
     },
@@ -40,8 +42,8 @@ const data = [
         supplier: "AOHSSA",
         title: "Dailies",
         description: "700 Dailies",
-        poCreator: "José N",
-        poDate: "25 Dec. 2021",
+        poCreator: "José L. N.",
+        poDate: "25-12-2021",
         poStatus: "Approved",
         checkedItem: false
     },
@@ -51,7 +53,7 @@ const data = [
         title: "Freshlook Colorblends",
         description: "3000 FL",
         poCreator: "Luis N.",
-        poDate: "28 Dec. 2021",
+        poDate: "28-12-2021",
         poStatus: "Cancelled",
         checkedItem: false
     },
@@ -61,7 +63,7 @@ const data = [
         title: "Soflens Astigmatismo",
         description: "76 Soflens",
         poCreator: "Iván N.",
-        poDate: "3 Jan. 2022",
+        poDate: "03-01-2022",
         poStatus: "Requested",
         checkedItem: false
     },
@@ -71,7 +73,7 @@ const data = [
         title: "B&L Ultra",
         description: "54 Lentes",
         poCreator: "José M. H.",
-        poDate: "26 Jan. 2022",
+        poDate: "26-01-2022",
         poStatus: "Approved",
         checkedItem: false
     },
@@ -81,7 +83,7 @@ const data = [
         title: "Armazón",
         description: "25 Blanco con Negro",
         poCreator: "Blanca J.",
-        poDate: "6 Feb. 2022",
+        poDate: "06-02-2022",
         poStatus: "Waiting",
         checkedItem: false
     },
@@ -90,8 +92,8 @@ const data = [
         supplier: "AOHSSA",
         title: "Ocudrive",
         description: "230 Vitaminas",
-        poCreator: "José N.",
-        poDate: "12 Feb. 2022",
+        poCreator: "José L. N.",
+        poDate: "12-02-2022",
         poStatus: "Cancelled",
         checkedItem: false
     },
@@ -101,7 +103,7 @@ const data = [
         title: "Freslook Colorblends",
         description: "74 Lentes Azules",
         poCreator: "Iván N.",
-        poDate: "16 Apr. 2022",
+        poDate: "16-04-2022",
         poStatus: "Approved",
         checkedItem: false
     },
@@ -110,8 +112,8 @@ const data = [
         supplier: "AOHSSA",
         title: "Armazón",
         description: "76 Carey",
-        poCreator: "José Manuel H.",
-        poDate: "29 Jun. 2022",
+        poCreator: "José M. H.",
+        poDate: "29-06-2022",
         poStatus: "Delivered",
         checkedItem: false
     },
@@ -121,7 +123,7 @@ const data = [
         title: "Acuvue Oasys",
         description: "26 Acuvue",
         poCreator: "Iván N.",
-        poDate: "4 Sep. 2022",
+        poDate: "4-09-2022",
         poStatus: "Ordered",
         checkedItem: false
     },
@@ -131,7 +133,7 @@ const data = [
         title: "Air Optix",
         description: "100 Air Optix",
         poCreator: "Iván N.",
-        poDate: "10 Oct. 2022",
+        poDate: "10-10-2022",
         poStatus: "Approved",
         checkedItem: false
     }
@@ -171,10 +173,27 @@ const PurchaseOrder = () => {
     const [nextButton, setNextButton] = useState(nextButtonStart);
     const [addDeleteButtons, setAddDeleteButtons] = useState(false);
     const [dataLength, setDataLength] = useState(data.length);
-    
+
+    const [dataPurchaseOrders, setDataPurchaseOrders] = useState();
+    const [isLoading, setisLoading] = useState(true);
 
     const [modal_list, setmodal_list] = useState(false);
     const [drp_secondary_sm, setDrp_secondary_sm] = useState(false);
+
+    useEffect( () => {
+        const fetchData = async () => {
+            setisLoading(true);
+
+            const responseDataPurchaseOrders = await axios.get("https://mongodb-api-optidashboard.herokuapp.com/purchase-order");
+            setDataPurchaseOrders(responseDataPurchaseOrders.data);
+            console.log(dataPurchaseOrders);
+
+            setisLoading(false);
+        }
+        fetchData();
+        console.log(dataPurchaseOrders);
+        
+    }, [])
 
     function nextPO(){
         setPrevButton(true);
