@@ -75,10 +75,10 @@ const PurchaseOrder = () => {
 
             const responseDataPurchaseOrders = await axios.get("https://mongodb-api-optidashboard.herokuapp.com/purchase-order");
             setDataPurchaseOrders(responseDataPurchaseOrders.data);
-            data = []
             data = responseDataPurchaseOrders;
 
             arrayPositionEnd = data.length;
+            // listElements = data.length;
             numPODisplay = data.length;
 
             await resetValues(true);
@@ -151,7 +151,10 @@ const PurchaseOrder = () => {
         arrayPositionEnd = numPOs;
         numPODisplay = arrayPositionEnd;
 
-        if((data.length) < (arrayPositionEnd)){
+        if (data.length === arrayPositionEnd){
+            setNextButton(false);
+        }
+        else if((data.length) < (arrayPositionEnd)){
             numPODisplay = data.length;
             setNextButton(false);
         }
@@ -239,9 +242,34 @@ const PurchaseOrder = () => {
         setDataPurchaseOrders(responseDataPurchaseOrders.data);
         data = []
         data = responseDataPurchaseOrders;
+        
+    }    
+    
+    async function notifyDelete(poIndex, deleteMultiple) {
 
+        if(deleteMultiple){
+            textToastify = ("Multiple PO deleted!")
+            toast.error(textToastify, {});
+            await readAllSelected(true);
+            let countFor = 0;
+            let copyMultipleDataSelected = multipleDataSelected;
+            
+            for (let i = 0; i < multipleDataSelected.length; i++){
+                await deleteData(multipleDataSelected[i-countFor]);
+                multipleDataSelected = copyMultipleDataSelected;
+                countFor++
+            }
+
+        }
+        else{
+            textToastify = ("#PO" + data[poIndex].poID + " " + data[poIndex].title + " deleted!")
+            toast.error(textToastify, {});
+            await deleteData(poIndex);    
+        }
         await resetValues(true);
-    }      
+        toggleAll(0, 0, false, true);
+         
+    } 
 
     async function readAllSelected(deleteProcess){
 
@@ -265,32 +293,6 @@ const PurchaseOrder = () => {
             multipleDataSelected=[];
         }
     }
-
-    async function notifyDelete(poIndex, deleteMultiple) {
-
-        if(deleteMultiple){
-            textToastify = ("Multiple PO deleted!")
-            toast.error(textToastify, {});
-            await readAllSelected(true);
-            let countFor = 0;
-            let copyMultipleDataSelected = multipleDataSelected;
-            
-            for (let i = 0; i < multipleDataSelected.length; i++){
-                await deleteData(multipleDataSelected[i-countFor]);
-                multipleDataSelected = copyMultipleDataSelected;
-                countFor++
-            }
-        }
-        else{
-            textToastify = ("#PO" + data[poIndex].poID + " " + data[poIndex].title + " deleted!")
-            toast.error(textToastify, {});
-            await deleteData(poIndex);
-            
-            
-        }
-        toggleAll(0, 0, false, true);
-         
-    } 
 
 
     return (
