@@ -7,6 +7,7 @@ import {
 const INIT_STATE = {
     alertType: "",
     addPOisOpen: false,
+    addPONumber: 0,
     editPOisOpen: false,
 };
 
@@ -21,7 +22,8 @@ const POAlert = (state = INIT_STATE, action) => {
         case ADD_ALERT:
             return{
                 ...state,
-                addPOisOpen: action.payload,
+                addPOisOpen: action.payload.isOpen,
+                addPONumber: action.payload.poNumber
             }
 
         case EDIT_ALERT:

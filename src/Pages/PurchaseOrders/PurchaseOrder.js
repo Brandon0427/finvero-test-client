@@ -38,6 +38,7 @@ let textToastify = "";
 let multipleDataSelected = [];
 let anyDataSelected = false;
 let anyMultipleDataSelected = [];
+let lastPONumber = 0;
 
 // if(data.length > listElements){
 //     nextButtonStart = true;
@@ -78,8 +79,8 @@ const PurchaseOrder = () => {
             data = responseDataPurchaseOrders;
 
             arrayPositionEnd = data.length;
-            // listElements = data.length;
             numPODisplay = data.length;
+            lastPONumber = data[0].poID;
 
             await resetValues(true);
             setisLoading(false);
@@ -96,8 +97,8 @@ const PurchaseOrder = () => {
         data = []
         data = responseDataPurchaseOrders;
         arrayPositionEnd = data.length;
-        // listElements = data.length;
         numPODisplay = data.length;
+        lastPONumber = data[0].poID;
         await resetValues(true);
         setisLoading(false);
 
@@ -349,7 +350,7 @@ const PurchaseOrder = () => {
                                                             color="success" 
                                                             className="add-btn" 
                                                             id="create-btn"
-                                                            onClick={() => dispatch(openAddPOType(!showAddalert))}
+                                                            onClick={() => dispatch(openAddPOType(!showAddalert, (lastPONumber + 1)))}
                                                             >
                                                             
                                                             <i className="ri-add-line align-bottom me-1"></i>Add

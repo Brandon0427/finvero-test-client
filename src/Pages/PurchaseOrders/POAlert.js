@@ -30,6 +30,7 @@ let requiredValuesFilled = [false, false, false, false, true];
 
 const AlertAddPO = () => {
     const showAddalert = useSelector(state => (state.POAlert.addPOisOpen));
+    const numberPO = useSelector(state => (state.POAlert.addPONumber));
     const dispatch = useDispatch();
 
     const [poCreatorInput, setPOCreatorInput] = useState("");
@@ -54,7 +55,7 @@ const AlertAddPO = () => {
                 "Access-Control-Allow-Origin": "*",
             },
             data: qs.stringify({
-                poID: 12,
+                poID: numberPO,
                 supplier: supplierInput,
                 title: titleInput,
                 description: descriptionInput,

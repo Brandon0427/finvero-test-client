@@ -30,9 +30,9 @@ function* selectAlertType({ payload: alertType }) {
     }
 }
 
-function* openAddPOType({ payload: isOpenAdd }) {
+function* openAddPOType({ payload: isOpenAdd, numberPO }) {
     try {
-        yield call(openAddPOTypeAction, isOpenAdd)
+        yield call(openAddPOTypeAction, isOpenAdd, numberPO)
       }
     catch (error) {
         yield console.log("The error produced on openAddPOType was: " + error)

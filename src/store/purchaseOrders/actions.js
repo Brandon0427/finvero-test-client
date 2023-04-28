@@ -9,9 +9,12 @@ export const selectAlertType = alertType => ({
     payload: alertType
 });
 
-export const openAddPOType = isOpenAdd => ({
+export const openAddPOType = (isOpenAdd, poNumber) => ({
     type: ADD_ALERT,
-    payload: isOpenAdd
+    payload: {
+        isOpen: isOpenAdd,
+        poNumber: poNumber
+    }
 });
 
 export const openEditType = isOpenEdit => ({
