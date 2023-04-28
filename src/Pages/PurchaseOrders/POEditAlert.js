@@ -28,7 +28,7 @@ let confirmButton = false;
 
 let requiredValuesFilled = [false, false, false, false, true];
 
-const AlertAddPO = () => {
+const AlertEditPO = (props) => {
     const showAddalert = useSelector(state => (state.POAlert.addPOisOpen));
     const dispatch = useDispatch();
 
@@ -421,4 +421,4 @@ const AlertAddPO = () => {
 
 }
 
-export default AlertAddPO;
+export default AlertEditPO;

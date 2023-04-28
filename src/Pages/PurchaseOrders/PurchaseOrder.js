@@ -88,6 +88,22 @@ const PurchaseOrder = () => {
         
     }, [])
 
+    async function resetPage(refresh){
+
+        setisLoading(true);
+        const responseDataPurchaseOrders = await axios.get("https://mongodb-api-optidashboard.herokuapp.com/purchase-order");
+        setDataPurchaseOrders(responseDataPurchaseOrders.data);
+        data = []
+        data = responseDataPurchaseOrders;
+        arrayPositionEnd = data.length;
+        // listElements = data.length;
+        numPODisplay = data.length;
+        await resetValues(true);
+        setisLoading(false);
+
+        // window.location.reload(refresh);
+    }
+
     function nextPO(){
         setPrevButton(true);
 
@@ -484,16 +500,17 @@ const PurchaseOrder = () => {
                                                     
 
                                                     {isLoading ? 
-                                                        <td>
-                                                            <div>
-                                                                <Spinner color="primary" size="sm">
-                                                                    Loading...
-                                                                </Spinner>
-                                                            </div>
-                                                        </td> 
+                                                        <tr index={1}>
+                                                            <td>
+                                                                <div>
+                                                                    <Spinner color="primary" size="sm">
+                                                                        Loading Data...
+                                                                    </Spinner>
+                                                                </div>
+                                                            </td> 
+                                                        </tr>
                                                         : ""}
                                                         
-
 
                                                 </tbody>
                                             </table>
@@ -529,9 +546,15 @@ const PurchaseOrder = () => {
 
                                                 {/* {addNewPO ? <AlertAddPO showPopUp={true}/> : ""} */}
 
-                                                <AlertAddPO/>
+                                                <AlertAddPO />
                                                                                             
                                             </div>
+                                        </div>
+
+                                        <div className="d-flex justify-content-center">
+                                            <Button className="btn-outline-warning" color="white" onClick={() => resetPage()}>
+                                                Reload
+                                            </Button>
                                         </div>
                                     </div>
 

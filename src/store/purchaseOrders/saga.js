@@ -32,7 +32,7 @@ function* selectAlertType({ payload: alertType }) {
 
 function* openAddPOType({ payload: isOpenAdd }) {
     try {
-        yield call(openAddPOTypeAction(isOpenAdd))
+        yield call(openAddPOTypeAction, isOpenAdd)
       }
     catch (error) {
         yield console.log("The error produced on openAddPOType was: " + error)
@@ -41,7 +41,7 @@ function* openAddPOType({ payload: isOpenAdd }) {
 
 function* openEditType({ payload: isOpenEdit }) {
     try {
-        yield call(openEditTypeAction(isOpenEdit))
+        yield call(openEditTypeAction, isOpenEdit)
       }
     catch (error) {
         yield console.log("The error produced on openEditType was: " + error)
