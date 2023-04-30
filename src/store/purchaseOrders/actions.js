@@ -17,7 +17,17 @@ export const openAddPOType = (isOpenAdd, poNumber) => ({
     }
 });
 
-export const openEditType = isOpenEdit => ({
+export const openEditType = (isOpenEdit, poEditID, poEditDate, poEditCreator, poEditStatus, poEditTitle, poEditSupplier, poEditDescription, poEditAditionalComments) => ({
     type: EDIT_ALERT,
-    payload: isOpenEdit
+    payload: {
+        isOpen: isOpenEdit,
+        poID: poEditID,
+        poDate: poEditDate,
+        poCreator: poEditCreator,
+        poStatus: poEditStatus,
+        poTitle: poEditTitle,
+        poSupplier: poEditSupplier,
+        poDescription: poEditDescription,
+        poAditionalComments: poEditAditionalComments
+    }
 });

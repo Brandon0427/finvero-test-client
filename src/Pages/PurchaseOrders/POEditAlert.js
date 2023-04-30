@@ -1,9 +1,9 @@
 import {Col, Row, Modal, ModalHeader, ModalBody} from "reactstrap";
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import qs from 'qs';
 //redux
 import { useSelector, useDispatch } from "react-redux";
-import { openAddPOType } from "../../store/actions";
+import { openEditType } from "../../store/actions";
 
 import axios from 'axios';
 
@@ -26,21 +26,33 @@ const date = (year + "-" + month + "-" + day);
 
 let confirmButton = false;
 
-let requiredValuesFilled = [false, false, false, false, true];
+let requiredValuesFilled = [true, true, true, true, true];
 
 const AlertEditPO = (props) => {
-    const showAddalert = useSelector(state => (state.POAlert.addPOisOpen));
-    const numberPO = useSelector(state => (state.POAlert.addPONumber));
+    const showEditAlert = useSelector(state => (state.POAlert.editPOisOpen));
+    const idPO = useSelector(state => (state.POAlert.editPOID));
+    const datePO = useSelector(state => (state.POAlert.editPODate));
+    // const creatorPO = useSelector(state => (state.POAlert.editPOCreator));
+    // const statusPO = useSelector(state => (state.POAlert.editPOStatus));
+    const titlePO = useSelector(state => (state.POAlert.editPOTitle));
+    const supplierPO = useSelector(state => (state.POAlert.editPOSupplier));
+    const descriptionPO = useSelector(state => (state.POAlert.editPODescription));
+    const aditionalCommentsPO = useSelector(state => (state.POAlert.editPOAditionalComments));
+
     const dispatch = useDispatch();
+
+    useEffect(() => {
+
+    }, [])
 
     const [poCreatorInput, setPOCreatorInput] = useState("");
     const [poStatusInput, setPOStatusInput] = useState("");
 
-    const [dateInput, setDateInput] = useState(date);
-    const [titleInput, setTitleInput] = useState("");
-    const [supplierInput, setSupplierInput] = useState("");
-    const [descriptionInput, setDescriptionInput] = useState("");
-    const [additionalCommentsInput, setAdditionalCommentsInput] = useState("");
+    const [dateInput, setDateInput] = useState(datePO);
+    const [titleInput, setTitleInput] = useState(titlePO);
+    const [supplierInput, setSupplierInput] = useState(supplierPO);
+    const [descriptionInput, setDescriptionInput] = useState(descriptionPO);
+    const [additionalCommentsInput, setAdditionalCommentsInput] = useState(aditionalCommentsPO);
 
     const [activeConfirmButton, setActiveConfirmButton] = useState(false);
     const [activeSubmitButton, setActiveSubmitButton] = useState(false);
@@ -48,14 +60,13 @@ const AlertEditPO = (props) => {
     const handleSubmit = async () => {
 
         const options = {
-            method: "POST",
+            method: "PATCH",
             headers: {
                 Accept: "*/*",
                 "Content-Type": "application/x-www-form-urlencoded",
                 "Access-Control-Allow-Origin": "*",
             },
             data: qs.stringify({
-                poID: 1234,
                 supplier: supplierInput,
                 title: titleInput,
                 description: descriptionInput,
@@ -64,16 +75,16 @@ const AlertEditPO = (props) => {
                 poStatus: poStatusInput,
                 checkedItem: false
             }),  
-            url: 'https://mongodb-api-optidashboard.herokuapp.com/purchase-order'
+            url: ('https://mongodb-api-optidashboard.herokuapp.com/purchase-order/' + idPO)
         }
 
-        await axios.post(
+        await axios.patch(
             options.url,
             options.data,
             { headers: options.headers })
             .then((response) => {
                 console.log(response);
-                dispatch(openAddPOType(false))
+                dispatch(openEditType(false))
 
                 //Reset Values
                 resetPOValues();
@@ -198,20 +209,20 @@ const AlertEditPO = (props) => {
         <Col lg={6}>
         <Modal
             size="lg"
-            isOpen={showAddalert}
-            toggle={() => dispatch(openAddPOType(!showAddalert))}
+            isOpen={showEditAlert}
+            toggle={() => dispatch(openEditType(!showEditAlert))}
         >
             <ModalHeader
-                toggle={() => dispatch(openAddPOType(!showAddalert))}
+                toggle={() => dispatch(openEditType(!showEditAlert))}
 
                 // setmodal(!modal);
-                className="bg-soft-success card-header"
+                className="bg-soft-info card-header"
             >
 
                 <div className="d-flex">
                     <div className="flex-grow-1">
-                        <h5 className="font-size-16 text-success my-1">
-                            Add New Purchase Order
+                        <h5 className="font-size-16 text-info my-1">
+                            {"Edit " + titlePO}
                         </h5>
                     </div>
                     <div className="flex-shrink-0">
@@ -223,7 +234,7 @@ const AlertEditPO = (props) => {
             <ModalBody>
                 <div className="text-center">
                     <div className="mb-6">
-                        <i className="mdi mdi mdi-basket-outline display-4 text-success"></i>
+                        <i className="mdi mdi mdi-basket-outline display-4 text-info"></i>
                     </div>
                     <h4 className="alert-heading">Please provide the following details:</h4>
                         <br />
@@ -240,7 +251,7 @@ const AlertEditPO = (props) => {
                                         className="form-control"
                                         type="date"
                                         name="Date"
-                                        defaultValue={dateInput}
+                                        defaultValue={datePO}
                                         onChange={handleInputChange}
                                         id="example-date-input"
                                     />
@@ -325,6 +336,7 @@ const AlertEditPO = (props) => {
                                             type="text"
                                             className="form-control"
                                             id="floatingLastnameInput"
+                                            // defaultValue={supplierPO}
                                             defaultValue={supplierInput}
                                             onChange={handleInputChange}
                                             name="Supplier"
@@ -341,7 +353,8 @@ const AlertEditPO = (props) => {
                                             className="form-control"
                                             id="floatingLastnameInput"
                                             name="Description"
-                                            defaultValue={descriptionInput}
+                                            // defaultValue={descriptionPO}
+                                            dafaultValue={descriptionInput}
                                             onChange={handleInputChange}
                                             rows={10}
                                         />
@@ -360,6 +373,7 @@ const AlertEditPO = (props) => {
                                             className="form-control"
                                             id="floatingFirstnameInput"
                                             name="Aditional Comments"
+                                            // defaultValue={aditionalCommentsPO}
                                             defaultValue={additionalCommentsInput}
                                             onChange={handleInputChange}
                                             // value={titleInput}

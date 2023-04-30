@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import env from "react-dotenv";
+// import env from "react-dotenv";
+
 // action
-import { openAddPOType } from "../../store/actions";
+import { openAddPOType, openEditType } from "../../store/actions";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -25,6 +26,7 @@ import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 
 import AlertAddPO from './POAlert.js'
+import AlertEditPO from './POEditAlert.js'
 
 let data = []
 
@@ -53,6 +55,7 @@ const PurchaseOrder = () => {
 
     //Redux variables and processes
     const showAddalert = useSelector(state => (state.POAlert.addPOisOpen));
+    const showEditAlert = useSelector(state => (state.POAlert.editPOisOpen));
     const dispatch = useDispatch();
 
     //Purchase Orders fetch Data States
@@ -394,7 +397,7 @@ const PurchaseOrder = () => {
                                                     </div>{" "}
 
                                                     <div className="search-box ms-2">
-                                                        <input type="text" className="form-control search" placeholder="Search..." />
+                                                        <input type="text" className="form-control search" placeholder="Search IDs or titles..." />
                                                         <i className="ri-search-line search-icon" style={{paddingBottom: 8}}></i>
                                                     </div>
                                                 </div>
@@ -481,8 +484,9 @@ const PurchaseOrder = () => {
                                                                 <div className="d-flex gap-2">
                                                                     {addDeleteButtons ? "" :
                                                                         <div className="edit">
-                                                                            <button className="btn btn-sm btn-success edit-item-btn"
-                                                                                data-bs-toggle="modal" data-bs-target="#showModal">Edit</button>
+                                                                            <button className="btn btn-sm btn-info edit-item-btn"
+                                                                                data-bs-toggle="modal" data-bs-target="#showModal"
+                                                                                onClick={() => dispatch(openEditType(!showEditAlert, eachPO._id, eachPO.poDate, eachPO.poCreator, eachPO.poStatus, eachPO.title, eachPO.supplier, eachPO.description, ""))}>Edit</button>
                                                                         </div>
                                                                     }
                                                                     <div className="remove">
@@ -548,6 +552,7 @@ const PurchaseOrder = () => {
                                                 {/* {addNewPO ? <AlertAddPO showPopUp={true}/> : ""} */}
 
                                                 <AlertAddPO />
+                                                <AlertEditPO />
                                                                                             
                                             </div>
                                         </div>

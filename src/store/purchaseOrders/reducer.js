@@ -9,6 +9,14 @@ const INIT_STATE = {
     addPOisOpen: false,
     addPONumber: 0,
     editPOisOpen: false,
+    editPOID: "",
+    editPODate: "",
+    editPOCreator: "",
+    editPOStatus: "",
+    editPOTitle: "",
+    editPOSupplier: "",
+    editPODescription: "",
+    editPOAditionalComments: ""
 };
 
 const POAlert = (state = INIT_STATE, action) => {
@@ -29,7 +37,15 @@ const POAlert = (state = INIT_STATE, action) => {
         case EDIT_ALERT:
             return{
                 ...state,
-                editPOisOpen: action.payload
+                editPOisOpen: action.payload.isOpen,
+                editPOID: action.payload.poID,
+                editPODate: action.payload.poDate,
+                editPOCreator: action.payload.poCreator,
+                editPOStatus: action.payload.poStatus,
+                editPOTitle: action.payload.poTitle,
+                editPOSupplier: action.payload.poSupplier,
+                editPODescription: action.payload.poDescription,
+                editPOAditionalComments: action.payload.poAditionnalComments
             }
 
         default:
