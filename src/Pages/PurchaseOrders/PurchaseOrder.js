@@ -486,7 +486,7 @@ const PurchaseOrder = () => {
                                                                         <div className="edit">
                                                                             <button className="btn btn-sm btn-info edit-item-btn"
                                                                                 data-bs-toggle="modal" data-bs-target="#showModal"
-                                                                                onClick={() => dispatch(openEditType(!showEditAlert, eachPO._id, eachPO.poDate, eachPO.poCreator, eachPO.poStatus, eachPO.title, eachPO.supplier, eachPO.description, ""))}>Edit</button>
+                                                                                onClick={() => dispatch(openEditType(!showEditAlert, eachPO._id, eachPO.poID, eachPO.poDate, eachPO.poCreator, eachPO.poStatus, eachPO.title, eachPO.supplier, eachPO.description, ""))}>Edit</button>
                                                                         </div>
                                                                     }
                                                                     <div className="remove">

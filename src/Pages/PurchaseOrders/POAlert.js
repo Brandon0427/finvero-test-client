@@ -341,7 +341,7 @@ const AlertAddPO = () => {
                                             className="form-control"
                                             id="floatingLastnameInput"
                                             name="Description"
-                                            defaultValue={descriptionInput}
+                                            value={descriptionInput}
                                             onChange={handleInputChange}
                                             rows={10}
                                         />
@@ -355,14 +355,14 @@ const AlertAddPO = () => {
                                 </Col>
                                 <Col md={12}>
                                     <div className="form-floating mb-3">
-                                        <input
+                                        <textarea
                                             type="text"
                                             className="form-control"
                                             id="floatingFirstnameInput"
                                             name="Aditional Comments"
-                                            defaultValue={additionalCommentsInput}
+                                            value={additionalCommentsInput}
                                             onChange={handleInputChange}
-                                            // value={titleInput}
+                                            rows={10}
                                         />
                                         <label htmlFor="floatingFirstnameInput">
                                             Aditional Comments

@@ -39,9 +39,9 @@ function* openAddPOType({ payload: isOpenAdd, numberPO }) {
     }
 }
 
-function* openEditType({ payload: isOpenEdit, poEditID, poEditDate, poEditCreator, poEditStatus, poEditTitle, poEditSupplier, poEditDescription, poEditAditionalComments }) {
+function* openEditType({ payload: isOpenEdit, poEditID, poEditNumber, poEditDate, poEditCreator, poEditStatus, poEditTitle, poEditSupplier, poEditDescription, poEditAditionalComments }) {
     try {
-        yield call(openEditTypeAction, isOpenEdit, poEditID, poEditDate, poEditCreator, poEditStatus, poEditTitle, poEditSupplier, poEditDescription, poEditAditionalComments)
+        yield call(openEditTypeAction, isOpenEdit, poEditID, poEditNumber, poEditDate, poEditCreator, poEditStatus, poEditTitle, poEditSupplier, poEditDescription, poEditAditionalComments)
       }
     catch (error) {
         yield console.log("The error produced on openEditType was: " + error)

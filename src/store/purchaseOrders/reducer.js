@@ -39,6 +39,7 @@ const POAlert = (state = INIT_STATE, action) => {
                 ...state,
                 editPOisOpen: action.payload.isOpen,
                 editPOID: action.payload.poID,
+                editPONumber: action.payload.poNumber,
                 editPODate: action.payload.poDate,
                 editPOCreator: action.payload.poCreator,
                 editPOStatus: action.payload.poStatus,

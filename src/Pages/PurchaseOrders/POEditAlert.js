@@ -1,5 +1,5 @@
 import {Col, Row, Modal, ModalHeader, ModalBody} from "reactstrap";
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import qs from 'qs';
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -29,33 +29,23 @@ let confirmButton = false;
 let requiredValuesFilled = [true, true, true, true, true];
 
 const AlertEditPO = (props) => {
+
     const showEditAlert = useSelector(state => (state.POAlert.editPOisOpen));
     const idPO = useSelector(state => (state.POAlert.editPOID));
+    const numberPO = useSelector(state => (state.POAlert.editPONumber));
     const datePO = useSelector(state => (state.POAlert.editPODate));
-    // const creatorPO = useSelector(state => (state.POAlert.editPOCreator));
-    // const statusPO = useSelector(state => (state.POAlert.editPOStatus));
+    const creatorPO = useSelector(state => (state.POAlert.editPOCreator));
+    const statusPO = useSelector(state => (state.POAlert.editPOStatus));
     const titlePO = useSelector(state => (state.POAlert.editPOTitle));
     const supplierPO = useSelector(state => (state.POAlert.editPOSupplier));
     const descriptionPO = useSelector(state => (state.POAlert.editPODescription));
     const aditionalCommentsPO = useSelector(state => (state.POAlert.editPOAditionalComments));
 
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-
-    }, [])
-
-    const [poCreatorInput, setPOCreatorInput] = useState("");
-    const [poStatusInput, setPOStatusInput] = useState("");
-
-    const [dateInput, setDateInput] = useState(datePO);
-    const [titleInput, setTitleInput] = useState(titlePO);
-    const [supplierInput, setSupplierInput] = useState(supplierPO);
-    const [descriptionInput, setDescriptionInput] = useState(descriptionPO);
-    const [additionalCommentsInput, setAdditionalCommentsInput] = useState(aditionalCommentsPO);
-
-    const [activeConfirmButton, setActiveConfirmButton] = useState(false);
+    const [activeConfirmButton, setActiveConfirmButton] = useState(true);
     const [activeSubmitButton, setActiveSubmitButton] = useState(false);
+
+
+    const dispatch = useDispatch();
 
     const handleSubmit = async () => {
 
@@ -67,12 +57,12 @@ const AlertEditPO = (props) => {
                 "Access-Control-Allow-Origin": "*",
             },
             data: qs.stringify({
-                supplier: supplierInput,
-                title: titleInput,
-                description: descriptionInput,
-                poCreator: poCreatorInput,
-                poDate: dateInput,
-                poStatus: poStatusInput,
+                supplier: supplierPO,
+                title: titlePO,
+                description: descriptionPO,
+                poCreator: creatorPO,
+                poDate: datePO,
+                poStatus: statusPO,
                 checkedItem: false
             }),  
             url: ('https://mongodb-api-optidashboard.herokuapp.com/purchase-order/' + idPO)
@@ -95,18 +85,12 @@ const AlertEditPO = (props) => {
     function resetPOValues(){
 
         //Reset Input values
-        requiredValuesFilled = [false, false, false, false, true];
-        setPOCreatorInput("");
-        setPOStatusInput("");
-        setDateInput(date);
-        setTitleInput("");
-        setSupplierInput("");
-        setDescriptionInput("");
-        setAdditionalCommentsInput("");
+        requiredValuesFilled = [true, true, true, true, true];
+        dispatch(openEditType(!showEditAlert, "", date, "", "", '', "", "", ""));
 
         //Reset Submit PO
         confirmButton = false;
-        setActiveConfirmButton(false);
+        setActiveConfirmButton(true);
         setActiveSubmitButton(false);
 
     } 
@@ -120,7 +104,8 @@ const AlertEditPO = (props) => {
 
         switch(elementType){
             case "PO Creator":
-                setPOCreatorInput(value);
+                // setPOCreatorInput(value);
+                dispatch(openEditType(showEditAlert, idPO, numberPO, datePO, value, statusPO, titlePO, supplierPO, descriptionPO, aditionalCommentsPO));
                 if(textValue !== ""){
                     requiredValuesFilled[0] = true;
                 }
@@ -130,7 +115,8 @@ const AlertEditPO = (props) => {
                 break;
             
             case "PO Status":
-                setPOStatusInput(value);
+                // setPOStatusInput(value);
+                dispatch(openEditType(showEditAlert, idPO, numberPO, datePO, creatorPO, value, titlePO, supplierPO, descriptionPO, aditionalCommentsPO));
                 if(textValue !== ""){
                     requiredValuesFilled[1] = true;
                 }
@@ -140,7 +126,7 @@ const AlertEditPO = (props) => {
                 break;
 
             case "Title":
-                setTitleInput(value);
+                dispatch(openEditType(showEditAlert, idPO, numberPO, datePO, creatorPO, statusPO, value, supplierPO, descriptionPO, aditionalCommentsPO));
                 if(textValue !== ""){
                     requiredValuesFilled[2] = true;
                 }
@@ -150,17 +136,17 @@ const AlertEditPO = (props) => {
                 break;
             
             case "Supplier":
-                setSupplierInput(value);
+                dispatch(openEditType(showEditAlert, idPO, numberPO, datePO, creatorPO, statusPO, titlePO, value, descriptionPO, aditionalCommentsPO));
                 if(textValue !== ""){
                     requiredValuesFilled[3] = true;
                 }
                 else{
                     requiredValuesFilled[3] = false;
                 }
-                break;        
+                break;
 
             case "Date":
-                setDateInput(value)
+                dispatch(openEditType(showEditAlert, idPO, numberPO, value, creatorPO, statusPO, titlePO, supplierPO, descriptionPO, aditionalCommentsPO));
                 if(textValue !== ""){
                     requiredValuesFilled[4] = true;
                 }
@@ -170,11 +156,11 @@ const AlertEditPO = (props) => {
                 break;
             
             case "Description":
-                setDescriptionInput(value);
+                dispatch(openEditType(showEditAlert, idPO, numberPO, datePO, creatorPO, statusPO, titlePO, supplierPO, value, aditionalCommentsPO));
                 break;
 
             case "Addtional Comments":
-                setAdditionalCommentsInput(value);
+                dispatch(openEditType(showEditAlert, idPO, numberPO, datePO, numberPO, creatorPO, statusPO, titlePO, supplierPO, descriptionPO, value));
                 break;
 
             case "Confirm":
@@ -222,7 +208,7 @@ const AlertEditPO = (props) => {
                 <div className="d-flex">
                     <div className="flex-grow-1">
                         <h5 className="font-size-16 text-info my-1">
-                            {"Edit " + titlePO}
+                            {"Edit " + titlePO + "   |   #PO" + numberPO}
                         </h5>
                     </div>
                     <div className="flex-shrink-0">
@@ -266,12 +252,12 @@ const AlertEditPO = (props) => {
                                                 id="floatingSelectGrid"
                                                 aria-label="Floating label select example"
                                                 name = "PO Creator"
-                                                value={poCreatorInput}
+                                                value={creatorPO}
                                                 onChange={handleInputChange}
                                                 required
                                             >
-                                                <option disabled selected value="">
-                                                    Select an Option
+                                                <option disabled selected value={creatorPO}>
+                                                    {creatorPO}
                                                 </option>
                                                 <option value="Iván N.">Iván N.</option>
                                                 <option value="Luis N.">Luis N.</option>
@@ -291,12 +277,12 @@ const AlertEditPO = (props) => {
                                                 id="floatingSelectGrid"
                                                 aria-label="Floating label select example"
                                                 name = "PO Status"
-                                                value={poStatusInput}
+                                                value={statusPO}
                                                 onChange={handleInputChange}
                                                 required
                                             >
-                                            <option disabled selected value="">
-                                                Select an Option
+                                            <option disabled selected value={statusPO}>
+                                                {statusPO}
                                             </option>
                                             <option value="Requested">Requested</option>
                                             <option value="Approved">Approved</option>
@@ -321,9 +307,8 @@ const AlertEditPO = (props) => {
                                             className="form-control"
                                             id="floatingFirstnameInput"
                                             name="Title"
-                                            defaultValue={titleInput}
+                                            value = {titlePO}
                                             onChange={handleInputChange}
-                                            // value={titleInput}
                                         />
                                         <label htmlFor="floatingFirstnameInput">
                                             Title *
@@ -336,8 +321,7 @@ const AlertEditPO = (props) => {
                                             type="text"
                                             className="form-control"
                                             id="floatingLastnameInput"
-                                            // defaultValue={supplierPO}
-                                            defaultValue={supplierInput}
+                                            value={supplierPO}
                                             onChange={handleInputChange}
                                             name="Supplier"
                                         />
@@ -353,8 +337,7 @@ const AlertEditPO = (props) => {
                                             className="form-control"
                                             id="floatingLastnameInput"
                                             name="Description"
-                                            // defaultValue={descriptionPO}
-                                            dafaultValue={descriptionInput}
+                                            value={descriptionPO}
                                             onChange={handleInputChange}
                                             rows={10}
                                         />
@@ -368,15 +351,14 @@ const AlertEditPO = (props) => {
                                 </Col>
                                 <Col md={12}>
                                     <div className="form-floating mb-3">
-                                        <input
+                                        <textarea
                                             type="text"
                                             className="form-control"
                                             id="floatingFirstnameInput"
                                             name="Aditional Comments"
-                                            // defaultValue={aditionalCommentsPO}
-                                            defaultValue={additionalCommentsInput}
+                                            value={aditionalCommentsPO}
                                             onChange={handleInputChange}
-                                            // value={titleInput}
+                                            rows={10}
                                         />
                                         <label htmlFor="floatingFirstnameInput">
                                             Aditional Comments
