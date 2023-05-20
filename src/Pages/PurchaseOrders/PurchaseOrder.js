@@ -4,7 +4,7 @@ import axios from 'axios';
 // import env from "react-dotenv";
 
 // action
-import { openAddPOType, openEditType } from "../../store/actions";
+import { openAddPOType, openEditType, viewPODetails } from "../../store/actions";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -41,15 +41,6 @@ let multipleDataSelected = [];
 let anyDataSelected = false;
 let anyMultipleDataSelected = [];
 let lastPONumber = 0;
-
-// if(data.length > listElements){
-//     nextButtonStart = true;
-//     arrayPositionEnd = listElements;
-//     numPODisplay = listElements;
-// }
-// else{
-//     nextButtonStart = false;
-// }
 
 const PurchaseOrder = () => {
 
@@ -432,12 +423,20 @@ const PurchaseOrder = () => {
                                                                     <input className="form-check-input" type="checkbox" name="chk_child" onChange={() => tog_list((index + startPODisplay), false, eachPO.checkedItem)} checked={eachPO.checkedItem}/>
                                                                 </div>
                                                             </th>
-                                                            <td className="id"><Link to={"/purchase-orders/PO" + eachPO.title} className="fw-medium link-primary">{"#PO" + eachPO.poID}</Link></td>
+                                                            <td className="id">
+                                                                <Link 
+                                                                    to={"/purchase-orders/" + eachPO._id}
+                                                                    className="fw-medium link-primary"
+                                                                    onClick={() => dispatch(viewPODetails(eachPO._id, eachPO.poID, eachPO.poDate, eachPO.poCreator, eachPO.poStatus, eachPO.title, eachPO.supplier, eachPO.description, eachPO.additionalComments))}
+                                                                >
+                                                                    {"#PO" + eachPO.poID}
+                                                                </Link>
+                                                            </td>
                                                             {/* <td className="customer_name">Mary Cousar</td> */}
-                                                            <td className="email">{eachPO.title}</td>
-                                                            <td className="customer_name">{eachPO.supplier}</td>
-                                                            <td className="phone">{eachPO.poCreator}</td>
-                                                            <td className="date">{eachPO.poDate}</td>
+                                                            <td>{eachPO.title}</td>
+                                                            <td>{eachPO.supplier}</td>
+                                                            <td>{eachPO.poCreator}</td>
+                                                            <td>{eachPO.poDate}</td>
 
                                                             {(()=> {
                                                                 switch (eachPO.poStatus) {
@@ -486,7 +485,7 @@ const PurchaseOrder = () => {
                                                                         <div className="edit">
                                                                             <button className="btn btn-sm btn-info edit-item-btn"
                                                                                 data-bs-toggle="modal" data-bs-target="#showModal"
-                                                                                onClick={() => dispatch(openEditType(!showEditAlert, eachPO._id, eachPO.poID, eachPO.poDate, eachPO.poCreator, eachPO.poStatus, eachPO.title, eachPO.supplier, eachPO.description, ""))}>Edit</button>
+                                                                                onClick={() => dispatch(openEditType(!showEditAlert, eachPO._id, eachPO.poID, eachPO.poDate, eachPO.poCreator, eachPO.poStatus, eachPO.title, eachPO.supplier, eachPO.description, eachPO.additionalComments))}>Edit</button>
                                                                         </div>
                                                                     }
                                                                     <div className="remove">
@@ -581,9 +580,7 @@ const PurchaseOrder = () => {
                         pauseOnHover
                         theme="light"
                         />
-                </Card>
-
-                
+                </Card>          
 
                 
     );

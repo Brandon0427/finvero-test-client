@@ -6,6 +6,7 @@ import Dashboard from "../Pages/Dashboard";
 
 //Purchase Orders
 import PurchaseOrders from "../Pages/PurchaseOrders";
+import IndividualPO from "../Pages/PurchaseOrders/IndividualPO";
 
 // Import Calender
 import Calender from "../Pages/Calender";
@@ -104,6 +105,7 @@ const authProtectedRoutes = [
 
   //purchaseorders
   { path: "/purchase-orders", component: <PurchaseOrders /> },
+  { path: "/purchase-orders/:id", component: <IndividualPO />},
 
   // Calender
   { path: "/calendar", component: <Calender /> },

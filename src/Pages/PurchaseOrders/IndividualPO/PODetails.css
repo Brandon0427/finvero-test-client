@@ -1,0 +1,21 @@
+.restrict-card {
+  height: 175px;
+  overflow-y: overlay;
+}
+
+.pWrap{
+  white-space: pre-wrap;
+  text-align: justify;
+}
+
+.templateButton{
+  color: white;
+}
+
+.templateButton:hover{
+  color: white;
+}
+
+.submitButton{
+  margin-bottom: 15px;
+}

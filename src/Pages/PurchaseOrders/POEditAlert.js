@@ -39,7 +39,7 @@ const AlertEditPO = (props) => {
     const titlePO = useSelector(state => (state.POAlert.editPOTitle));
     const supplierPO = useSelector(state => (state.POAlert.editPOSupplier));
     const descriptionPO = useSelector(state => (state.POAlert.editPODescription));
-    const aditionalCommentsPO = useSelector(state => (state.POAlert.editPOAditionalComments));
+    const additionalCommentsPO = useSelector(state => (state.POAlert.editPOAdditionalComments));
 
     const [activeConfirmButton, setActiveConfirmButton] = useState(true);
     const [activeSubmitButton, setActiveSubmitButton] = useState(false);
@@ -63,6 +63,7 @@ const AlertEditPO = (props) => {
                 poCreator: creatorPO,
                 poDate: datePO,
                 poStatus: statusPO,
+                additionalComments: additionalCommentsPO,
                 checkedItem: false
             }),  
             url: ('https://mongodb-api-optidashboard.herokuapp.com/purchase-order/' + idPO)
@@ -105,7 +106,7 @@ const AlertEditPO = (props) => {
         switch(elementType){
             case "PO Creator":
                 // setPOCreatorInput(value);
-                dispatch(openEditType(showEditAlert, idPO, numberPO, datePO, value, statusPO, titlePO, supplierPO, descriptionPO, aditionalCommentsPO));
+                dispatch(openEditType(showEditAlert, idPO, numberPO, datePO, value, statusPO, titlePO, supplierPO, descriptionPO, additionalCommentsPO));
                 if(textValue !== ""){
                     requiredValuesFilled[0] = true;
                 }
@@ -116,7 +117,7 @@ const AlertEditPO = (props) => {
             
             case "PO Status":
                 // setPOStatusInput(value);
-                dispatch(openEditType(showEditAlert, idPO, numberPO, datePO, creatorPO, value, titlePO, supplierPO, descriptionPO, aditionalCommentsPO));
+                dispatch(openEditType(showEditAlert, idPO, numberPO, datePO, creatorPO, value, titlePO, supplierPO, descriptionPO, additionalCommentsPO));
                 if(textValue !== ""){
                     requiredValuesFilled[1] = true;
                 }
@@ -126,7 +127,7 @@ const AlertEditPO = (props) => {
                 break;
 
             case "Title":
-                dispatch(openEditType(showEditAlert, idPO, numberPO, datePO, creatorPO, statusPO, value, supplierPO, descriptionPO, aditionalCommentsPO));
+                dispatch(openEditType(showEditAlert, idPO, numberPO, datePO, creatorPO, statusPO, value, supplierPO, descriptionPO, additionalCommentsPO));
                 if(textValue !== ""){
                     requiredValuesFilled[2] = true;
                 }
@@ -136,7 +137,7 @@ const AlertEditPO = (props) => {
                 break;
             
             case "Supplier":
-                dispatch(openEditType(showEditAlert, idPO, numberPO, datePO, creatorPO, statusPO, titlePO, value, descriptionPO, aditionalCommentsPO));
+                dispatch(openEditType(showEditAlert, idPO, numberPO, datePO, creatorPO, statusPO, titlePO, value, descriptionPO, additionalCommentsPO));
                 if(textValue !== ""){
                     requiredValuesFilled[3] = true;
                 }
@@ -146,7 +147,7 @@ const AlertEditPO = (props) => {
                 break;
 
             case "Date":
-                dispatch(openEditType(showEditAlert, idPO, numberPO, value, creatorPO, statusPO, titlePO, supplierPO, descriptionPO, aditionalCommentsPO));
+                dispatch(openEditType(showEditAlert, idPO, numberPO, value, creatorPO, statusPO, titlePO, supplierPO, descriptionPO, additionalCommentsPO));
                 if(textValue !== ""){
                     requiredValuesFilled[4] = true;
                 }
@@ -156,11 +157,11 @@ const AlertEditPO = (props) => {
                 break;
             
             case "Description":
-                dispatch(openEditType(showEditAlert, idPO, numberPO, datePO, creatorPO, statusPO, titlePO, supplierPO, value, aditionalCommentsPO));
+                dispatch(openEditType(showEditAlert, idPO, numberPO, datePO, creatorPO, statusPO, titlePO, supplierPO, value, additionalCommentsPO));
                 break;
 
-            case "Addtional Comments":
-                dispatch(openEditType(showEditAlert, idPO, numberPO, datePO, numberPO, creatorPO, statusPO, titlePO, supplierPO, descriptionPO, value));
+            case "Additional Comments":
+                dispatch(openEditType(showEditAlert, idPO, numberPO, datePO, creatorPO, statusPO, titlePO, supplierPO, descriptionPO, value));
                 break;
 
             case "Confirm":
@@ -355,13 +356,13 @@ const AlertEditPO = (props) => {
                                             type="text"
                                             className="form-control"
                                             id="floatingFirstnameInput"
-                                            name="Aditional Comments"
-                                            value={aditionalCommentsPO}
+                                            name="Additional Comments"
+                                            value={additionalCommentsPO}
                                             onChange={handleInputChange}
                                             rows={10}
                                         />
                                         <label htmlFor="floatingFirstnameInput">
-                                            Aditional Comments
+                                            Additional Comments
                                         </label>
                                     </div>
                                 </Col>

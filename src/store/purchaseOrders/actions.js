@@ -1,7 +1,8 @@
 import {
     SELECT_ALERT,
     ADD_ALERT,
-    EDIT_ALERT
+    EDIT_ALERT,
+    INDIVIDUAL_PO
   } from "./actionTypes";
 
 export const selectAlertType = alertType => ({
@@ -17,7 +18,7 @@ export const openAddPOType = (isOpenAdd, poNumber) => ({
     }
 });
 
-export const openEditType = (isOpenEdit, poEditID, poEditNumber, poEditDate, poEditCreator, poEditStatus, poEditTitle, poEditSupplier, poEditDescription, poEditAditionalComments) => ({
+export const openEditType = (isOpenEdit, poEditID, poEditNumber, poEditDate, poEditCreator, poEditStatus, poEditTitle, poEditSupplier, poEditDescription, poEditAdditionalComments) => ({
     type: EDIT_ALERT,
     payload: {
         isOpen: isOpenEdit,
@@ -29,6 +30,21 @@ export const openEditType = (isOpenEdit, poEditID, poEditNumber, poEditDate, poE
         poTitle: poEditTitle,
         poSupplier: poEditSupplier,
         poDescription: poEditDescription,
-        poAditionalComments: poEditAditionalComments
+        poAdditionalComments: poEditAdditionalComments
+    }
+});
+
+export const viewPODetails = (poDetailsID, poDetailsNumber, poDetailsDate, poDetailsCreator, poDetailsStatus, poDetailsTitle, poDetailsSupplier, poDetailsDescription, poDetailsAdditionalComments) => ({
+    type: INDIVIDUAL_PO,
+    payload: {
+        poID: poDetailsID,
+        poNumber: poDetailsNumber,
+        poDate: poDetailsDate,
+        poCreator: poDetailsCreator,
+        poStatus: poDetailsStatus,
+        poTitle: poDetailsTitle,
+        poSupplier: poDetailsSupplier,
+        poDescription: poDetailsDescription,
+        poAdditionalComments: poDetailsAdditionalComments
     }
 });

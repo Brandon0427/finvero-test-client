@@ -62,8 +62,10 @@ const AlertAddPO = () => {
                 poCreator: poCreatorInput,
                 poDate: dateInput,
                 poStatus: poStatusInput,
-                checkedItem: false
-            }),  
+                additionalComments: additionalCommentsInput,
+                checkedItem: false,
+
+            }),
             url: 'https://mongodb-api-optidashboard.herokuapp.com/purchase-order'
         }
 
@@ -162,7 +164,7 @@ const AlertAddPO = () => {
                 setDescriptionInput(value);
                 break;
 
-            case "Addtional Comments":
+            case "Additional Comments":
                 setAdditionalCommentsInput(value);
                 break;
 
@@ -359,13 +361,13 @@ const AlertAddPO = () => {
                                             type="text"
                                             className="form-control"
                                             id="floatingFirstnameInput"
-                                            name="Aditional Comments"
+                                            name="Additional Comments"
                                             value={additionalCommentsInput}
                                             onChange={handleInputChange}
                                             rows={10}
                                         />
                                         <label htmlFor="floatingFirstnameInput">
-                                            Aditional Comments
+                                            Additional Comments
                                         </label>
                                     </div>
                                 </Col>
