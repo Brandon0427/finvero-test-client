@@ -19,3 +19,8 @@
 .submitButton{
   margin-bottom: 15px;
 }
+
+.titleCard{
+  font-style: italic;
+  font-size: 1.15rem;
+}

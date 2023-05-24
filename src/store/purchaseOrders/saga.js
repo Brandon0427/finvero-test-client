@@ -50,9 +50,9 @@ function* openEditType({ payload: isOpenEdit, poEditID, poEditNumber, poEditDate
     }
 }
 
-function* viewPODetails({ payload: poID, poNumber, poDate, poCreator, poStatus, poTitle, poSupplier, poDescription, poAdditionalComments }) {
+function* viewPODetails({ payload: poID, poNumber, poDate, poCreator, poStatus, poTitle, poSupplier, poDescription, poAdditionalComments, poDetails }) {
     try {
-        yield call(viewPODetailsAction, poID, poNumber, poDate, poCreator, poStatus, poTitle, poSupplier, poDescription, poAdditionalComments)
+        yield call(viewPODetailsAction, poID, poNumber, poDate, poCreator, poStatus, poTitle, poSupplier, poDescription, poAdditionalComments, poDetails)
       }
     catch (error) {
         yield console.log("The error produced on openEditType was: " + error)

@@ -31,6 +31,7 @@ const INIT_STATE = {
     poDetailsSupplier: "",
     poDetailsDescription: "",
     poDetailsAdditionalComments: "",
+    poDetails: []
 };
 
 const POAlert = (state = INIT_STATE, action) => {
@@ -75,6 +76,7 @@ const POAlert = (state = INIT_STATE, action) => {
                 poDetailsSupplier: action.payload.poSupplier,
                 poDetailsDescription: action.payload.poDescription,
                 poDetailsAdditionalComments: action.payload.poAdditionalComments,
+                poDetails: action.payload.poDetails
             }
 
         default:

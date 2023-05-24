@@ -105,7 +105,7 @@ const authProtectedRoutes = [
 
   //purchaseorders
   { path: "/purchase-orders", component: <PurchaseOrders /> },
-  { path: "/purchase-orders/:id", component: <IndividualPO />},
+  { path: "/purchase-orders/:title/:poID/:id", component: <IndividualPO />},
 
   // Calender
   { path: "/calendar", component: <Calender /> },

@@ -34,7 +34,7 @@ export const openEditType = (isOpenEdit, poEditID, poEditNumber, poEditDate, poE
     }
 });
 
-export const viewPODetails = (poDetailsID, poDetailsNumber, poDetailsDate, poDetailsCreator, poDetailsStatus, poDetailsTitle, poDetailsSupplier, poDetailsDescription, poDetailsAdditionalComments) => ({
+export const viewPODetails = (poDetailsID, poDetailsNumber, poDetailsDate, poDetailsCreator, poDetailsStatus, poDetailsTitle, poDetailsSupplier, poDetailsDescription, poDetailsAdditionalComments, poDetails) => ({
     type: INDIVIDUAL_PO,
     payload: {
         poID: poDetailsID,
@@ -45,6 +45,7 @@ export const viewPODetails = (poDetailsID, poDetailsNumber, poDetailsDate, poDet
         poTitle: poDetailsTitle,
         poSupplier: poDetailsSupplier,
         poDescription: poDetailsDescription,
-        poAdditionalComments: poDetailsAdditionalComments
+        poAdditionalComments: poDetailsAdditionalComments,
+        poDetails: poDetails
     }
 });

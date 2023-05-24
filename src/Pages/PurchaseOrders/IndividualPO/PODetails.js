@@ -11,11 +11,14 @@ import {
     Card,
     CardBody,
     Row,
-    Container
+    Container,
 } from 'reactstrap';
 import './PODetails.css';
 
+import { useParams } from 'react-router-dom';
+
 import { useSelector } from "react-redux";
+
 import { ExcelRenderer} from 'react-excel-renderer';
 import * as XLSX from 'xlsx';
 import Template from '../../../assets/documents/Excel Template PO Optioutlet.xlsx';
@@ -23,111 +26,204 @@ import Template from '../../../assets/documents/Excel Template PO Optioutlet.xls
 import qs from 'qs';
 import axios from 'axios';
 
+import {ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
+
+import { CSVLink } from 'react-csv';
+
 let excelJson = [];
-let data = {}
 let activeConfirmButton = false;
+
+const DownloadDetailsButton = () => {
+    const params = useParams();
+
+    const [temporaryLoading, setTemporaryLoading] = useState(true);
+    const [pageNumber, setPageNumber] = useState();
+    const [visibleElement, setVisibleElement] = useState(false);
+    const [dataPurchaseOrders, setDataPurchaseOrders] = useState();
+
+    const headers = [
+        {label: "Quantity", key: "Quantity"},
+        {label: "Line", key: "Line"},
+        {label: "Product", key: "Product"},
+        {label: "Color", key: "Color"},
+        {label: "Sphere", key: "Sphere"},
+        {label: "Cylinder", key: "Cylinder"},
+        {label: "Axis", key: "Axis"}
+    ]
+
+    useEffect( () => {
+        async function fetchData(){
+            const responseAPI = await axios.get("https://mongodb-api-optidashboard.herokuapp.com/purchase-order/" + params.id);
+            setDataPurchaseOrders(responseAPI.poDetails);
+            setPageNumber(responseAPI.poID)
+
+            setTemporaryLoading(false)
+            setVisibleElement(responseAPI.hasOwnProperty("poDetails"));
+        }
+    
+        fetchData();
+    }, [])
+
+    async function getData(){
+        setTemporaryLoading(true);
+        const responseAPI = await axios.get("https://mongodb-api-optidashboard.herokuapp.com/purchase-order/" + params.id);
+        setDataPurchaseOrders(responseAPI.details);
+        setTemporaryLoading(false);
+
+        //Reloads the page after downloading the document
+        document.location.reload();
+    }
+
+    return(
+        <div>
+            {(visibleElement && !temporaryLoading) &&
+            <Button color="info" className="">
+                <CSVLink
+                        headers={headers}
+                        data={dataPurchaseOrders}
+                        filename={"PO" + pageNumber + " Details | Optioutlet"}
+                        style={{ "textDecoration": "none", "color": "#fff" }}
+                        asyncOnClick={true}
+                        onClick={() => getData()}
+                >
+                    <i className="mdi mdi-cloud-download"/> Current Data
+                </CSVLink>
+            </Button>}
+        </div>
+    )
+}
 
 const PODetailsRender = () => {
 
-    // const poNumber = useSelector(state => (state.POAlert.poDetailsNumber));
-    const poID = useSelector(state => (state.POAlert.poDetailsID));
+    const params = useParams();
+    let responseAPI;
+
+    const poNumber = useSelector(state => (state.POAlert.poDetailsNumber));
     const poDate = useSelector(state => (state.POAlert.poDetailsDate));
     const poCreator = useSelector(state => (state.POAlert.poDetailsCreator));
     const poStatus = useSelector(state => (state.POAlert.poDetailsStatus));
-    // const poTitle = useSelector(state => (state.POAlert.poDetailsTitle));
+    const poTitle = useSelector(state => (state.POAlert.poDetailsTitle));
     const poSupplier = useSelector(state => (state.POAlert.poDetailsSupplier));
     const poDescription = useSelector(state => (state.POAlert.poDetailsDescription));
     const poAC = useSelector(state => (state.POAlert.poDetailsAdditionalComments));
 
+    const [temporaryLoading, setTemporaryLoading] = useState(true);
+
     const [dataPurchaseOrders, setDataPurchaseOrders] = useState({
-        poDate: "",
-        poCreator: "",
-        supplier: "",
-        poStatus: "",
-        description: "",
-        additionalComments: "",
+
+        title: poTitle,
+        poDate: poDate,
+        poCreator: poCreator,
+        poStatus: poStatus,
+        supplier: poSupplier,
+        description: poDescription,
+        additionalComments: poAC,
+    
     });
 
     useEffect( () => {
-        const fetchData = async () => {
 
-            const responseDataPurchaseOrders = await axios.get("https://mongodb-api-optidashboard.herokuapp.com/purchase-order/" + poID);
-            setDataPurchaseOrders(responseDataPurchaseOrders.data);
-            data = responseDataPurchaseOrders;
-            excelJson = data.poDetails;
-
+        async function fetchData (){
+            setTemporaryLoading(true);
+            if (poNumber === 0){
+                // eslint-disable-next-line react-hooks/exhaustive-deps
+                responseAPI = await axios.get("https://mongodb-api-optidashboard.herokuapp.com/purchase-order/" + params.id);
+                setDataPurchaseOrders({
+                    title: responseAPI.title,
+                    poDate: responseAPI.poDate,
+                    poCreator: responseAPI.poCreator,
+                    poStatus: responseAPI.poStatus,
+                    supplier: responseAPI.supplier,
+                    description: responseAPI.description,
+                    additionalComments: responseAPI.additionalComments,
+                });
+            }
+            setTemporaryLoading(false);
         }
-        fetchData();
-        
+
+       fetchData();
     }, [])
 
     return(
         <div>
+            <p className="titleCard">
+                {params.title}
+            </p>
             <Row>
                 <Col>
                     <h5>
-                        Creation Date:  
+                        Creation Date:
                     </h5>
                     <p>
-                        {poDate}
+                        {temporaryLoading ?
+                            poDate :
+                            dataPurchaseOrders.poDate
+                            }
                     </p>
                 </Col>
                 <Col>
                     <h5>
-                        Creator:  
+                        Creator:
                     </h5>
                     <p>
-                        {poCreator}
+                        {temporaryLoading ?
+                            poCreator :
+                            dataPurchaseOrders.poCreator
+                            }
                     </p>
                 </Col>
                 <Col>
                     <h5>
-                        Supplier:  
+                        Supplier:
                     </h5>
                     <p>
-                        {poSupplier}
+                        {temporaryLoading ?
+                            poSupplier :
+                            dataPurchaseOrders.supplier
+                            }
                     </p>
                 </Col>
                 <Col>
                     <h5>
-                        Status:  
+                        Status:
                     </h5>
 
                     {(()=> {
-                        switch (poStatus) {
+                        switch (dataPurchaseOrders.poStatus) {
                             case 'Requested':
                                 return( 
-                                        <span className="badge badge-soft-info text-uppercase">{poStatus}</span>
+                                        <span className="badge badge-soft-info text-uppercase">{dataPurchaseOrders.poStatus}</span>
                                         )
                                                                 
                             case 'Waiting':
                                 return( 
-                                        <span className="badge badge-soft-warning text-uppercase">{poStatus}</span>
+                                        <span className="badge badge-soft-warning text-uppercase">{dataPurchaseOrders.poStatus}</span>
                                         )
 
                             case 'Approved':
                                 return( 
-                                        <span className="badge badge-soft-primary text-uppercase">{poStatus}</span>
+                                        <span className="badge badge-soft-primary text-uppercase">{dataPurchaseOrders.poStatus}</span>
                                         )
 
                             case 'Ordered':
                                 return( 
-                                        <span className="badge badge-soft-primary text-uppercase">{poStatus}</span>
+                                        <span className="badge badge-soft-primary text-uppercase">{dataPurchaseOrders.poStatus}</span>
                                         )
                                                                 
                             case 'Delivered':
                                 return( 
-                                        <span className="badge badge-soft-success text-uppercase">{poStatus}</span>
+                                        <span className="badge badge-soft-success text-uppercase">{dataPurchaseOrders.poStatus}</span>
                                         )
 
                             case 'Cancelled':
                                 return( 
-                                        <span className="badge badge-soft-danger text-uppercase">{poStatus}</span>
+                                        <span className="badge badge-soft-danger text-uppercase">{dataPurchaseOrders.poStatus}</span>
                                         )
                                                                 
                             default:
                                 return( 
-                                        <span className="badge badge-soft-dark text-uppercase">{poStatus}</span>
+                                        <span className="badge badge-soft-dark text-uppercase">{"Loading"}</span>
                                         )
                                     }
                             })
@@ -136,26 +232,91 @@ const PODetailsRender = () => {
             </Row>
             <br />
             <Row>
-                <Col>
-                    <h5>
-                        Description:  
-                    </h5>
-                    <p className="pWrap">
-                        {poDescription}
-                    </p>
-                </Col>
-                <Col>
-                    <h5>
-                        Additional Comments:
-                    </h5>
-                    <p className="pWrap">
-                        {poAC}
-                    </p>
-                </Col>
+
+                {(temporaryLoading || dataPurchaseOrders.description !== "") ?
+                    <Col>
+                        <h5>
+                            Description:
+                        </h5>
+                        <p className="pWrap">
+                            {dataPurchaseOrders.description}
+                        </p>
+                    </Col> : <div />
+                }
+
+                {(temporaryLoading || dataPurchaseOrders.additionalComments !== "") ?
+                    <Col>
+                        <h5>
+                            Additional Comments:
+                        </h5>
+                        <p className="pWrap">
+                            {dataPurchaseOrders.additionalComments}
+                        </p>
+                    </Col> : <div />
+                }
+
             </Row>
             <br />
         </div>
     );
+}
+
+const InitialTable = () => {
+    const params = useParams();
+    const [temporaryLoading, setTemporaryLoading] = useState(true);
+    const [dataPurchaseOrders, setDataPurchaseOrders] = useState();
+
+    useEffect( () => {
+
+        async function fetchData (){
+
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            const responseAPI = await axios.get("https://mongodb-api-optidashboard.herokuapp.com/purchase-order/" + params.id);
+            setDataPurchaseOrders(responseAPI.poDetails);
+
+            if(typeof responseAPI.poDetails !== "undefined"){
+                setTemporaryLoading(false);
+            }
+            
+        }
+
+       fetchData();
+    }, [])
+
+    return (
+        
+        <div className="table-responsive table-card mt-3 mb-1">
+            {!temporaryLoading &&
+                <table className="table align-middle table-nowrap" id="customerTable">
+                <thead className="table-light">
+                    <tr>
+                        <th className="sort">Quantity</th>
+                        <th className="sort">Line</th>
+                        <th className="sort">Product</th>
+                        <th className="sort">Color</th>
+                        <th className="sort">Sphere</th>
+                        <th className="sort">Cylinder</th>
+                        <th className="sort">Axis</th>
+                    </tr>
+                </thead>
+
+                <tbody className="list form-check-all">
+                    {dataPurchaseOrders.map((eachProduct, index) => (
+                        <tr key={index}>
+                            <td>{eachProduct.Quantity}</td>
+                            <td>{eachProduct.Line}</td>
+                            <td>{eachProduct.Product}</td>
+                            <td>{eachProduct.Color}</td>
+                            <td>{eachProduct.Sphere}</td>
+                            <td>{eachProduct.Cylinder}</td>
+                            <td>{eachProduct.Axis}</td>
+                        </tr>
+                    ))}
+                </tbody>
+                
+            </table>}
+        </div> 
+    )
 }
 
 const ConfirmChanges = () => {
@@ -178,13 +339,20 @@ const ConfirmChanges = () => {
             url: ('https://mongodb-api-optidashboard.herokuapp.com/purchase-order/' + poID)
         }
 
-        await axios.patch(
-            options.url,
-            options.data,
-            { headers: options.headers })
-            .then((response) => {
-                console.log(response);
-              });
+        try{
+            await axios.patch(
+                options.url,
+                options.data,
+                { headers: options.headers })
+                .then((response) => {
+                    console.log(response);
+                  });
+                toast.success("Successfully added the PO Details", {});   
+        }
+        catch(e){
+            console.log(e);
+            toast.error("PO Details could not be added, try again", {}); 
+        }
     }
 
     function elementClicked (element, value){
@@ -326,15 +494,15 @@ class PODetails extends Component {
         <div>
             <form>
             <FormGroup row>
-                <Label for="exampleFile" xs={6} sm={4} lg={2} size="lg">Upload</Label>          
+                <Label for="exampleFile" xs={6} sm={4} lg={2} size="lg">Upload Data</Label>          
                 <Col xs={4} sm={8} lg={10}>                                                     
                     <InputGroup>
-                        <Button className="btn-success" color="white">
+                        <Button className="btn-warning" color="white">
                             <a href={Template} download className='templateButton'>
-                                Download Template
+                                <i className="mdi mdi-file-download" /> Template
                             </a>
                         </Button>
-                        <Button color="info" style={{color: "white", zIndex: 0}} onClick={this.openFileBrowser.bind(this)}><i className="cui-file"></i> Browse&hellip;</Button>
+                        <Button className="btn-success" style={{color: "white", zIndex: 0}} onClick={this.openFileBrowser.bind(this)}><i className="mdi mdi-microsoft-excel" /> Browse</Button>
                         <input type="file" hidden onChange={this.fileHandler.bind(this)} ref={this.fileInput} onClick={(event)=> { event.target.value = null }} style={{"padding":"10px"}} />                                
                         <Input type="text" className="form-control" value={this.state.uploadedFileName || ""} readOnly invalid={this.state.isFormInvalid} />                                              
                         <FormFeedback>    
@@ -342,21 +510,24 @@ class PODetails extends Component {
                                 Please select a .xlsx file only !
                             </Fade>                                                                
                         </FormFeedback>
-                    </InputGroup>     
-                </Col>                                                   
+                        
+                        <DownloadDetailsButton />
+
+                    </InputGroup>   
+                </Col>
+                                                                
             </FormGroup>
             </form>
 
             <Card body outline color="secondary" className="restrict-card"> 
                 <CardBody>
-                    <PODetailsRender />
-                    {(this.state.dataLoaded || (excelJson && excelJson.length > 0)) && 
-                        <h5>
-                            PO Details:
-                        </h5>
-                    }
+                    <PODetailsRender /> 
+                    <h5>
+                        PO Details:
+                    </h5>
                 </CardBody>
-                {(this.state.dataLoaded || (excelJson && excelJson.length > 0)) && 
+
+                {this.state.dataLoaded ?
                     <div className="table-responsive table-card mt-3 mb-1">
                         <table className="table align-middle table-nowrap" id="customerTable">
                             <thead className="table-light">
@@ -384,12 +555,27 @@ class PODetails extends Component {
                                 ))}
                             </tbody>
                         </table>
-                    </div>
+                    </div> 
+                    : <InitialTable />
                 }       
             </Card>
+
             {this.state.dataLoaded && 
                 <ConfirmChanges />
             }
+
+            <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
         </div>
         );
     }
