@@ -19,7 +19,6 @@ import { useParams } from 'react-router-dom';
 
 import { useSelector } from "react-redux";
 
-import { ExcelRenderer} from 'react-excel-renderer';
 import * as XLSX from 'xlsx';
 import Template from '../../../assets/documents/Excel Template PO Optioutlet.xlsx';
 
@@ -31,7 +30,10 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import { CSVLink } from 'react-csv';
 
+import { sampleData } from './Data';
+
 let excelJson = [];
+let verifiedJson = [];
 let activeConfirmButton = false;
 
 const DownloadDetailsButton = () => {
@@ -46,10 +48,11 @@ const DownloadDetailsButton = () => {
         {label: "Quantity", key: "Quantity"},
         {label: "Line", key: "Line"},
         {label: "Product", key: "Product"},
+        {label: "Capacity", key:"Capacity"},
         {label: "Color", key: "Color"},
         {label: "Sphere", key: "Sphere"},
         {label: "Cylinder", key: "Cylinder"},
-        {label: "Axis", key: "Axis"}
+        {label: "Axis", key: "Axis"},
     ]
 
     useEffect( () => {
@@ -293,6 +296,7 @@ const InitialTable = () => {
                         <th className="sort">Quantity</th>
                         <th className="sort">Line</th>
                         <th className="sort">Product</th>
+                        <th className="sort">Capacity</th>
                         <th className="sort">Color</th>
                         <th className="sort">Sphere</th>
                         <th className="sort">Cylinder</th>
@@ -306,6 +310,7 @@ const InitialTable = () => {
                             <td>{eachProduct.Quantity}</td>
                             <td>{eachProduct.Line}</td>
                             <td>{eachProduct.Product}</td>
+                            <td>{eachProduct.Capacity}</td>
                             <td>{eachProduct.Color}</td>
                             <td>{eachProduct.Sphere}</td>
                             <td>{eachProduct.Cylinder}</td>
@@ -321,7 +326,7 @@ const InitialTable = () => {
 
 const ConfirmChanges = () => {
     
-    const poID = useSelector(state => (state.POAlert.poDetailsID));
+    const params = useParams();
     const [confirmButton, setConfirmButton] = useState(false);
     const [activeSubmitButton, setActiveSubmitButton] = useState(false);
 
@@ -334,9 +339,9 @@ const ConfirmChanges = () => {
                 "Access-Control-Allow-Origin": "*",
             },
             data: qs.stringify({
-                poDetails: excelJson
+                poDetails: verifiedJson
             }),  
-            url: ('https://mongodb-api-optidashboard.herokuapp.com/purchase-order/' + poID)
+            url: ('https://mongodb-api-optidashboard.herokuapp.com/purchase-order/' + params.id)
         }
 
         try{
@@ -397,7 +402,9 @@ const ConfirmChanges = () => {
                             id="customSwitch1"
                             checked={confirmButton}
                             value={confirmButton}
-                            onChange={() => elementClicked("Confirm", !confirmButton)}
+                            onClick={() => elementClicked("Confirm", !confirmButton)}
+                            //Este onChange solo lo puse para que no me marque error
+                            onChange = {() => elementClicked("", confirmButton)}
                         />                        
                     </div> : ""}
 
@@ -422,29 +429,10 @@ class PODetails extends Component {
             isOpen: false,
             dataLoaded: false,
             isFormInvalid: false,
-            rows: null,
-            cols: null
         }
         this.fileHandler = this.fileHandler.bind(this);
         this.openFileBrowser = this.openFileBrowser.bind(this);
-        this.renderFile = this.renderFile.bind(this);
         this.fileInput = React.createRef();
-    }
-
-    renderFile = (fileObj) => {
-        //just pass the fileObj as parameter
-        ExcelRenderer(fileObj, (err, resp) => {
-            if(err){
-                console.log(err);            
-            }
-            else{
-                this.setState({
-                    dataLoaded: true,
-                    cols: resp.cols,
-                    rows: resp.rows
-                });
-            }
-        }); 
     }
 
     fileHandler = (event) => {
@@ -456,34 +444,201 @@ class PODetails extends Component {
 
             ///////// Converts the data to json //////////
             const reader = new FileReader();
-            reader.onload = (event) => {
+            reader.onload = async (event) => {
                 const data = event.target.result;
                 const workbook = XLSX.read(data, { type: "array" });
                 const sheetName = workbook.SheetNames[0];
                 const worksheet = workbook.Sheets[sheetName];
                 excelJson = XLSX.utils.sheet_to_json(worksheet);
-                console.log(excelJson);
-            };
-            reader.readAsArrayBuffer(event.target.files[0]);
-            activeConfirmButton = true;
-            ///////////////////////////////////////////////
-    
-            //check for file extension and pass only if it is .xlsx and display error message otherwise
-            if(fileName.slice(fileName.lastIndexOf('.')+1) === "xlsx"){
-                this.setState({
-                    uploadedFileName: fileName,
-                    isFormInvalid: false
-                });
-                this.renderFile(fileObj)
-            }    
-            else{
-                this.setState({
-                    isFormInvalid: true,
-                    uploadedFileName: ""
+
+                // console.log("Nueva rutina forEach")
+
+                excelJson.forEach((data, index) => {
+                    const foundObject = sampleData.find(({Product}) => Product === data.Product);
+                    // console.log("-------------")
+                    // console.log(foundObject)
+
+                    //-------------- Error or no error on the input data ------------------
+                    //Reviso que haya encontrado el dato y que coincida con el nombre de la marca
+                    if ((typeof foundObject == "undefined") ||
+                        (data.Line !== foundObject.Line)){
+                            data.error = true;
+                            data.errorType = "This product may not exist or is incorrectly written"
+                        }
+                    //Reviso que la propiedad Quantity exista y que tenga una cantidad propia escrita
+                    else if((!data.hasOwnProperty("Quantity")) ||
+                            (typeof data.Quantity !== "number") ||
+                            (data.Quantity < 0)){
+                            data.error = true;
+                            data.errorType = "The property quantity is incorrectly given or not given at all"
+                        }
+                    else{
+                        switch  (foundObject.Category){
+                            case "Lente de Contacto":
+                                //Sabiendo a que categoria pertenece, reviso que no se haya llenado informacion en campos que no pertenecen
+                                if (data.hasOwnProperty("Capacity") ||
+                                    data.hasOwnProperty("Color") ||
+                                    data.hasOwnProperty("Cylinder") ||
+                                    data.hasOwnProperty("Axis")){
+                                        data.error = true;
+                                        data.errorType = "Some of the fields given do not exist for this product"
+                                    }
+                                else{
+                                    //Finalmente reviso que la informacion del campo exista en la base de datos
+                                    if (!foundObject.Sphere.includes(data.Sphere)){
+                                        data.error = true;
+                                        data.errorType = "The value given on the field does not exist or is not given"
+                                    }
+                                    else{
+                                        data.error = false;
+                                    }
+                                }
+                                break;
+
+                            case "Lente de Contacto Astigmatismo":
+                                if (data.hasOwnProperty("Capacity") ||
+                                    data.hasOwnProperty("Color")){
+                                        data.error = true;
+                                        data.errorType = "Some of the fields given do not exist for this product"
+                                    }
+                                else{
+                                    if (!foundObject.Sphere.includes(data.Sphere) ||
+                                        !foundObject.Cylinder.includes(data.Cylinder) ||
+                                        !foundObject.Axis.includes(data.Axis)){
+                                            data.error = true;
+                                            data.errorType = "The value given on some fields do not exist or are not given"
+                                        }
+                                    else{
+                                        data.error = false;
+                                    }
+                                }
+                                break;
+                            
+                            case "Lente de Contacto de Color":
+                                if (data.hasOwnProperty("Capacity") ||
+                                    data.hasOwnProperty("Cylinder") ||
+                                    data.hasOwnProperty("Axis")){
+                                        data.error = true;
+                                        data.errorType = "Some of the fields given do not exist for this product"
+                                    }
+                                else{
+                                    if (!foundObject.Color.includes(data.Color) ||
+                                        !foundObject.Sphere.includes(data.Sphere)){
+                                            data.error = true;
+                                            data.errorType = "The value given on some fields do not exist or are not given"
+                                        }
+                                    else{
+                                        data.error = false;
+                                    }
+                                }
+                                break;
+
+                            case "Solución":
+                                if (data.hasOwnProperty("Color") ||
+                                    data.hasOwnProperty("Sphere") ||
+                                    data.hasOwnProperty("Cylinder") ||
+                                    data.hasOwnProperty("Axis")){
+                                        data.error = true;
+                                        data.errorType = "Some of the fields given do not exist for this product"
+                                    }
+                                else{
+                                    if (!foundObject.Capacity.includes(data.Capacity)){
+                                        data.error = true;
+                                        data.errorType = "The value given on the field does not exist or is not givenn"
+                                    }
+                                    else{
+                                        data.error = false;
+                                    }
+                                }
+                                break;
+
+                            default:
+                                break;
+                        }
+                    }
+
+                    //Solo guardar en la base de datos los datos que no contengan errores
+                    if(!data.error){
+
+                        let inputData;
+                        switch(foundObject.Category){
+                            case "Lente de Contacto":
+                                inputData = {
+                                    Quantity: parseInt(data.Quantity),
+                                    Line: data.Line,
+                                    Product: data.Product,
+                                    Sphere: data.Sphere
+                                }
+                                break;
+                            
+                            case "Lente de Contacto Astigmatismo":
+                                inputData = {
+                                    Quantity: parseInt(data.Quantity),
+                                    Line: data.Line,
+                                    Product: data.Product,
+                                    Sphere: data.Sphere,
+                                    Cylinder: data.Cylinder,
+                                    Axis: data.Axis
+                                }
+                                break;
+
+                            case "Lente de Contacto de Color":
+                                inputData = {
+                                    Quantity: parseInt(data.Quantity),
+                                    Line: data.Line,
+                                    Product: data.Product,
+                                    Color: data.Color,
+                                    Sphere: data.Sphere
+                                }
+                                break;
+
+                            case "Solución":
+                                inputData = {
+                                    Quantity: parseInt(data.Quantity),
+                                    Line: data.Line,
+                                    Product: data.Product,
+                                    Capacity: data.Capacity
+                                }
+                                break;
+
+                            default:
+                                break;
+                        }
+                        verifiedJson = [...verifiedJson, inputData]
+                    }
+
+
+                    //Cuando termina el forEach, activo el dataLoad para poder renderear
+                    if(index === (excelJson.length - 1)){
+                        //check for file extension and pass only if it is .xlsx and display error message otherwise
+                        if(fileName.slice(fileName.lastIndexOf('.')+1) === "xlsx"){
+                            // console.log(verifiedJson);
+                            activeConfirmButton = true;
+                            this.setState({
+                                uploadedFileName: fileName,
+                                isFormInvalid: false,
+                                dataLoaded: true
+                            });
+                        }    
+                        else{
+                            activeConfirmButton = false;
+                            this.setState({
+                                isFormInvalid: true,
+                                uploadedFileName: "",
+                                dataLoaded: false
+                            })
+                        }
+                    }
                 })
-            }
+
+            };
+
+            reader.readAsArrayBuffer(event.target.files[0]);
+            
         }               
     }
+
+
 
     openFileBrowser = () => {
         this.fileInput.current.click();
@@ -492,7 +647,7 @@ class PODetails extends Component {
     render() {
         return (
         <div>
-            <form>
+
             <FormGroup row>
                 <Label for="exampleFile" xs={6} sm={4} lg={2} size="lg">Upload Data</Label>          
                 <Col xs={4} sm={8} lg={10}>                                                     
@@ -517,7 +672,7 @@ class PODetails extends Component {
                 </Col>
                                                                 
             </FormGroup>
-            </form>
+
 
             <Card body outline color="secondary" className="restrict-card"> 
                 <CardBody>
@@ -535,22 +690,27 @@ class PODetails extends Component {
                                     <th className="sort">Quantity</th>
                                     <th className="sort">Line</th>
                                     <th className="sort">Product</th>
+                                    <th className="sort">Capacity</th>
                                     <th className="sort">Color</th>
                                     <th className="sort">Sphere</th>
                                     <th className="sort">Cylinder</th>
                                     <th className="sort">Axis</th>
+                                    <th className="sort">Error</th>
                                 </tr>
                             </thead>
                             <tbody className="list form-check-all">
                                 {excelJson.map((eachProduct, index) => (
-                                    <tr key={index}>
+                                    <tr key={index}
+                                        className={eachProduct.error && "pError"}>
                                         <td>{eachProduct.Quantity}</td>
                                         <td>{eachProduct.Line}</td>
                                         <td>{eachProduct.Product}</td>
+                                        <td>{eachProduct.Capacity}</td>
                                         <td>{eachProduct.Color}</td>
                                         <td>{eachProduct.Sphere}</td>
                                         <td>{eachProduct.Cylinder}</td>
                                         <td>{eachProduct.Axis}</td>
+                                        <td>{eachProduct.errorType}</td>
                                     </tr>
                                 ))}
                             </tbody>

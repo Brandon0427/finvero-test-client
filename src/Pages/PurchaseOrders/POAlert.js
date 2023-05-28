@@ -56,13 +56,13 @@ const AlertAddPO = () => {
             },
             data: qs.stringify({
                 poID: numberPO,
-                supplier: supplierInput,
-                title: titleInput,
-                description: descriptionInput,
+                supplier: supplierInput.trim(),
+                title: titleInput.trim(),
+                description: descriptionInput.trim(),
                 poCreator: poCreatorInput,
                 poDate: dateInput,
                 poStatus: poStatusInput,
-                additionalComments: additionalCommentsInput,
+                additionalComments: additionalCommentsInput.trim(),
                 checkedItem: false,
 
             }),

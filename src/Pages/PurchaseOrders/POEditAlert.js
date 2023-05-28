@@ -57,13 +57,13 @@ const AlertEditPO = (props) => {
                 "Access-Control-Allow-Origin": "*",
             },
             data: qs.stringify({
-                supplier: supplierPO,
-                title: titlePO,
-                description: descriptionPO,
+                supplier: supplierPO.trim(),
+                title: titlePO.trim(),
+                description: descriptionPO.trim(),
                 poCreator: creatorPO,
                 poDate: datePO,
                 poStatus: statusPO,
-                additionalComments: additionalCommentsPO,
+                additionalComments: additionalCommentsPO.trim(),
                 checkedItem: false
             }),  
             url: ('https://mongodb-api-optidashboard.herokuapp.com/purchase-order/' + idPO)

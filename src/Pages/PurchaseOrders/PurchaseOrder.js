@@ -404,11 +404,11 @@ const PurchaseOrder = () => {
                                                     <input className="form-check-input" type="checkbox" id="checkAll" onChange={() => tog_list(0, true, selectAllItems)} checked={selectAllItems}/>
                                                 </div>
                                             </th>
-                                            <th className="sort" data-sort="id">PO ID</th>
+                                            <th className="sort" data-sort="id">ID</th>
                                             <th className="sort" data-sort="email">Title</th>
                                             <th className="sort" data-sort="customer_name">Supplier</th>
                                             <th className="sort" data-sort="phone">Created By</th>
-                                            <th className="sort" data-sort="date">PO Date</th>
+                                            <th className="sort" data-sort="date">Date</th>
                                             <th className="sort" data-sort="status">Status</th>
                                             <th className="sort" data-sort="action">Action</th>
                                         </tr>
