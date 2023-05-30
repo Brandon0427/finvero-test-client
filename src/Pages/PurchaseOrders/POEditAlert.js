@@ -272,32 +272,122 @@ const AlertEditPO = (props) => {
                                         </div>
                                     </Col>
                                     <Col md={6}>
-                                        <div className="form-floating mb-3">
-                                            <select
-                                                className="form-select"
-                                                id="floatingSelectGrid"
-                                                aria-label="Floating label select example"
-                                                name = "PO Status"
-                                                value={statusPO}
-                                                onChange={handleInputChange}
-                                                required
-                                            >
-                                            <option disabled selected value={statusPO}>
-                                                {statusPO}
-                                            </option>
-                                            <option value="Requested">Requested</option>
-                                            <option value="Approved">Approved</option>
-                                            <option value="Ordered">Ordered</option>
-                                            <option value="Delivered">Delivered</option>
-                                            <optgroup label="Pending">
-                                                <option value="Waiting">Waiting for Approval</option>
-                                                <option value="Cancelled">Cancelled</option>
-                                            </optgroup>
-                                            </select>
-                                            <label htmlFor="floatingSelectGrid">
-                                                PO Status *
-                                            </label>
-                                        </div>
+                                        {(()=> {
+                                            switch (statusPO) {
+                                                case 'Waiting':
+                                                    return(
+                                                        <div className="form-floating mb-3">
+                                                            <select
+                                                                className="form-select"
+                                                                id="floatingSelectGrid"
+                                                                aria-label="Floating label select example"
+                                                                name = "PO Status"
+                                                                value={statusPO}
+                                                                onChange={handleInputChange}
+                                                                required
+                                                            >
+                                                                <option disabled selected value={statusPO}>
+                                                                    {statusPO}
+                                                                </option>
+                                                                <option value="Approved">Requested</option>
+                                                                <optgroup label="Pending">
+                                                                    <option value="Waiting">Waiting for Approval</option>
+                                                                    <option value="Cancelled">Cancelled</option>
+                                                                </optgroup>
+                                                            </select>
+                                                            <label htmlFor="floatingSelectGrid">
+                                                                PO Status *
+                                                            </label>
+                                                        </div> 
+                                                            )
+                                                                                    
+                                                case 'Approved':
+                                                    return(
+                                                        <div className="form-floating mb-3">
+                                                            <select
+                                                                className="form-select"
+                                                                id="floatingSelectGrid"
+                                                                aria-label="Floating label select example"
+                                                                name = "PO Status"
+                                                                value={statusPO}
+                                                                onChange={handleInputChange}
+                                                                required
+                                                            >
+                                                                <option disabled selected value={statusPO}>
+                                                                    {statusPO}
+                                                                </option>
+                                                                <option value="Approved">Approved</option>
+                                                                <option value="Ordered">Ordered</option>
+                                                                <option value="Delivered">Delivered</option>
+                                                                <optgroup label="Pending">
+                                                                    <option value="Cancelled">Cancelled</option>
+                                                                </optgroup>
+                                                            </select>
+                                                            <label htmlFor="floatingSelectGrid">
+                                                                PO Status *
+                                                            </label>
+                                                        </div> 
+                                                            )
+
+                                                case 'Requested':
+                                                    return(
+                                                        <div className="form-floating mb-3">
+                                                            <select
+                                                                className="form-select"
+                                                                id="floatingSelectGrid"
+                                                                aria-label="Floating label select example"
+                                                                name = "PO Status"
+                                                                value={statusPO}
+                                                                onChange={handleInputChange}
+                                                                required
+                                                            >
+                                                                <option disabled selected value={statusPO}>
+                                                                    {statusPO}
+                                                                </option>
+                                                                <option value="Requested">Requested</option>
+                                                                <optgroup label="Pending">
+                                                                    <option value="Waiting">Waiting for Approval</option>
+                                                                    <option value="Cancelled">Cancelled</option>
+                                                                </optgroup>
+                                                            </select>
+                                                            <label htmlFor="floatingSelectGrid">
+                                                                PO Status *
+                                                            </label>
+                                                        </div>
+                                                            )
+                                                                                    
+                                                default:
+                                                    return( 
+                                                        <div className="form-floating mb-3">
+                                                            <select
+                                                                className="form-select"
+                                                                id="floatingSelectGrid"
+                                                                aria-label="Floating label select example"
+                                                                name = "PO Status"
+                                                                value={statusPO}
+                                                                onChange={handleInputChange}
+                                                                required
+                                                            >
+                                                                <option disabled selected value={statusPO}>
+                                                                    {statusPO}
+                                                                </option>
+                                                                <option value="Requested">Requested</option>
+                                                                <option value="Approved">Approved</option>
+                                                                <option value="Ordered">Ordered</option>
+                                                                <option value="Delivered">Delivered</option>
+                                                                <optgroup label="Pending">
+                                                                    <option value="Waiting">Waiting for Approval</option>
+                                                                    <option value="Cancelled">Cancelled</option>
+                                                                </optgroup>
+                                                            </select>
+                                                            <label htmlFor="floatingSelectGrid">
+                                                                PO Status *
+                                                            </label>
+                                                        </div>
+                                                            )
+                                                        }
+                                                })
+                                        ()}
                                     </Col>
                                 </Row>
                                 
@@ -393,8 +483,6 @@ const AlertEditPO = (props) => {
                                                     disabled
                                                 />
                                             }
-                                            
-
                                         </div>
                                     </Col>
 

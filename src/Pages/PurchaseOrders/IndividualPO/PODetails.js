@@ -32,9 +32,13 @@ import { CSVLink } from 'react-csv';
 
 import { sampleData } from './Data';
 
+const MAX_PO_COST_WITH_NO_AUTHORIZATION = 5000;
+
 let excelJson = [];
 let verifiedJson = [];
 let activeConfirmButton = false;
+let totalCost = 0;
+let mainStatus;
 
 const DownloadDetailsButton = () => {
     const params = useParams();
@@ -53,6 +57,7 @@ const DownloadDetailsButton = () => {
         {label: "Sphere", key: "Sphere"},
         {label: "Cylinder", key: "Cylinder"},
         {label: "Axis", key: "Axis"},
+        {label: "Unit Price", key: "UnitPrice"},
     ]
 
     useEffect( () => {
@@ -268,16 +273,24 @@ const InitialTable = () => {
     const params = useParams();
     const [temporaryLoading, setTemporaryLoading] = useState(true);
     const [dataPurchaseOrders, setDataPurchaseOrders] = useState();
+    const [totalPrice, setTotalPrice] = useState(0);
+
+    let responseAPI;
 
     useEffect( () => {
 
         async function fetchData (){
 
             // eslint-disable-next-line react-hooks/exhaustive-deps
-            const responseAPI = await axios.get("https://mongodb-api-optidashboard.herokuapp.com/purchase-order/" + params.id);
+            responseAPI = await axios.get("https://mongodb-api-optidashboard.herokuapp.com/purchase-order/" + params.id);
             setDataPurchaseOrders(responseAPI.poDetails);
+            setTotalPrice(responseAPI.totalCost)
 
             if(typeof responseAPI.poDetails !== "undefined"){
+                // responseAPI.poDetails.forEach(data => {
+                //     data.totalCost = (data.UnitPrice * data.Quantity);
+                //     totalCost += data.totalCost;
+                // })
                 setTemporaryLoading(false);
             }
             
@@ -286,6 +299,23 @@ const InitialTable = () => {
        fetchData();
     }, [])
 
+    async function tog_list(checklistIndex, allItems, checkValue) {
+        // if (allItems){
+        //     toggleAll(arrayPositionStart, numPODisplay, !checkValue, false);
+        // }
+        // else{
+        //     data[checklistIndex].checkedItem = !checkValue;
+        //     if(!checkValue){
+        //         anyDataSelected = true;
+        //     }
+        //     else{
+        //         await readAllSelected(false);
+        //     }
+        //     setAddDeleteButtons(anyDataSelected);
+        //     setmodal_list(!modal_list);
+        // }   
+    }
+
     return (
         
         <div className="table-responsive table-card mt-3 mb-1">
@@ -293,6 +323,11 @@ const InitialTable = () => {
                 <table className="table align-middle table-nowrap" id="customerTable">
                 <thead className="table-light">
                     <tr>
+                        <th scope="col" style={{ width: "50px" }}>
+                            <div className="form-check">
+                                <input className="form-check-input" type="checkbox" id="checkAll" onChange={() => tog_list()}/>
+                            </div>
+                        </th>
                         <th className="sort">Quantity</th>
                         <th className="sort">Line</th>
                         <th className="sort">Product</th>
@@ -301,12 +336,19 @@ const InitialTable = () => {
                         <th className="sort">Sphere</th>
                         <th className="sort">Cylinder</th>
                         <th className="sort">Axis</th>
+                        <th className="sort">Unit Price</th>
+                        <th className="sort">Total</th>
                     </tr>
                 </thead>
 
                 <tbody className="list form-check-all">
                     {dataPurchaseOrders.map((eachProduct, index) => (
                         <tr key={index}>
+                            <th scope="row">
+                                <div className="form-check">
+                                    <input className="form-check-input" type="checkbox" name="chk_child" onChange={() => tog_list()}/>
+                                </div>
+                            </th>
                             <td>{eachProduct.Quantity}</td>
                             <td>{eachProduct.Line}</td>
                             <td>{eachProduct.Product}</td>
@@ -315,8 +357,23 @@ const InitialTable = () => {
                             <td>{eachProduct.Sphere}</td>
                             <td>{eachProduct.Cylinder}</td>
                             <td>{eachProduct.Axis}</td>
+                            <td>{"$" + eachProduct.UnitPrice}</td>
+                            <td>{"$" + (eachProduct.Quantity * eachProduct.UnitPrice)}</td>
                         </tr>
                     ))}
+                    <tr>
+                        <td/>
+                        <td/>
+                        <td/>
+                        <td/>
+                        <td/>
+                        <td/>
+                        <td/>
+                        <td/>
+                        <td/>
+                        <td style={{fontWeight: "bold"}}>Total:</td>
+                        <td style={{fontWeight: "bold"}}>{"$" + totalPrice}</td>
+                    </tr>
                 </tbody>
                 
             </table>}
@@ -325,12 +382,20 @@ const InitialTable = () => {
 }
 
 const ConfirmChanges = () => {
-    
+    mainStatus = useSelector(state => (state.POAlert.poDetailsStatus));
+
     const params = useParams();
     const [confirmButton, setConfirmButton] = useState(false);
     const [activeSubmitButton, setActiveSubmitButton] = useState(false);
 
     async function handleSubmit (){
+        if (totalCost < MAX_PO_COST_WITH_NO_AUTHORIZATION && (mainStatus === "Requested" || mainStatus === "Waiting")){
+            mainStatus = "Approved";
+        }
+        else if (totalCost > MAX_PO_COST_WITH_NO_AUTHORIZATION && (mainStatus === "Requested" || mainStatus === "Waiting")){
+            mainStatus = "Waiting"
+        }
+
         const options = {
             method: "PATCH",
             headers: {
@@ -339,12 +404,16 @@ const ConfirmChanges = () => {
                 "Access-Control-Allow-Origin": "*",
             },
             data: qs.stringify({
-                poDetails: verifiedJson
+                totalCost: totalCost,
+                poDetails: verifiedJson,
+                poStatus: mainStatus
+
             }),  
             url: ('https://mongodb-api-optidashboard.herokuapp.com/purchase-order/' + params.id)
         }
 
         try{
+            // console.log(options.data.totalCost)
             await axios.patch(
                 options.url,
                 options.data,
@@ -437,6 +506,7 @@ class PODetails extends Component {
 
     fileHandler = (event) => {
 
+        totalCost = 0;
         event.preventDefault();
         if(event.target.files.length){
             let fileObj = event.target.files[0];
@@ -490,6 +560,11 @@ class PODetails extends Component {
                                         data.errorType = "The value given on the field does not exist or is not given"
                                     }
                                     else{
+                                        if(!data.hasOwnProperty("UnitPrice")){
+                                            data.UnitPrice = foundObject.UnitPrice;
+                                        }
+                                        data.totalCost = (data.Quantity * data.UnitPrice);
+                                        totalCost += data.totalCost;
                                         data.error = false;
                                     }
                                 }
@@ -509,6 +584,11 @@ class PODetails extends Component {
                                             data.errorType = "The value given on some fields do not exist or are not given"
                                         }
                                     else{
+                                        if(!data.hasOwnProperty("UnitPrice")){
+                                            data.UnitPrice = foundObject.UnitPrice;
+                                        }
+                                        data.totalCost = (data.Quantity * data.UnitPrice);
+                                        totalCost += data.totalCost;
                                         data.error = false;
                                     }
                                 }
@@ -528,6 +608,11 @@ class PODetails extends Component {
                                             data.errorType = "The value given on some fields do not exist or are not given"
                                         }
                                     else{
+                                        if(!data.hasOwnProperty("UnitPrice")){
+                                            data.UnitPrice = foundObject.UnitPrice;
+                                        }
+                                        data.totalCost = (data.Quantity * data.UnitPrice);
+                                        totalCost += data.totalCost;
                                         data.error = false;
                                     }
                                 }
@@ -547,6 +632,11 @@ class PODetails extends Component {
                                         data.errorType = "The value given on the field does not exist or is not givenn"
                                     }
                                     else{
+                                        if(!data.hasOwnProperty("UnitPrice")){
+                                            data.UnitPrice = foundObject.UnitPrice;
+                                        }
+                                        data.totalCost = (data.Quantity * data.UnitPrice);
+                                        totalCost += data.totalCost;
                                         data.error = false;
                                     }
                                 }
@@ -567,6 +657,7 @@ class PODetails extends Component {
                                     Quantity: parseInt(data.Quantity),
                                     Line: data.Line,
                                     Product: data.Product,
+                                    UnitPrice: data.UnitPrice,
                                     Sphere: data.Sphere
                                 }
                                 break;
@@ -576,6 +667,7 @@ class PODetails extends Component {
                                     Quantity: parseInt(data.Quantity),
                                     Line: data.Line,
                                     Product: data.Product,
+                                    UnitPrice: data.UnitPrice,
                                     Sphere: data.Sphere,
                                     Cylinder: data.Cylinder,
                                     Axis: data.Axis
@@ -587,6 +679,7 @@ class PODetails extends Component {
                                     Quantity: parseInt(data.Quantity),
                                     Line: data.Line,
                                     Product: data.Product,
+                                    UnitPrice: data.UnitPrice,
                                     Color: data.Color,
                                     Sphere: data.Sphere
                                 }
@@ -597,6 +690,7 @@ class PODetails extends Component {
                                     Quantity: parseInt(data.Quantity),
                                     Line: data.Line,
                                     Product: data.Product,
+                                    UnitPrice: data.UnitPrice,
                                     Capacity: data.Capacity
                                 }
                                 break;
@@ -695,6 +789,8 @@ class PODetails extends Component {
                                     <th className="sort">Sphere</th>
                                     <th className="sort">Cylinder</th>
                                     <th className="sort">Axis</th>
+                                    <th className="sort">Unit Price</th>
+                                    <th className="sort">Total</th>
                                     <th className="sort">Error</th>
                                 </tr>
                             </thead>
@@ -710,9 +806,24 @@ class PODetails extends Component {
                                         <td>{eachProduct.Sphere}</td>
                                         <td>{eachProduct.Cylinder}</td>
                                         <td>{eachProduct.Axis}</td>
+                                        <td>{"$" + eachProduct.UnitPrice}</td>
+                                        <td>{"$" + eachProduct.totalCost}</td>
                                         <td>{eachProduct.errorType}</td>
                                     </tr>
                                 ))}
+                                <tr>
+                                    <td/>
+                                    <td/>
+                                    <td/>
+                                    <td/>
+                                    <td/>
+                                    <td/>
+                                    <td/>
+                                    <td/>
+                                    <td style={{fontWeight: "bold"}}>Total:</td>
+                                    <td style={{fontWeight: "bold"}}>{"$" + totalCost}</td>
+                                    <td/>
+                                </tr>
                             </tbody>
                         </table>
                     </div> 

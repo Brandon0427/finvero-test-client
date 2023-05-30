@@ -290,13 +290,14 @@ const AlertAddPO = () => {
                                                 Select an Option
                                             </option>
                                             <option value="Requested">Requested</option>
-                                            <option value="Approved">Approved</option>
+                                            <option value="Approved">Not Defined</option>
+                                            {/* <option value="Approved">Approved</option>
                                             <option value="Ordered">Ordered</option>
                                             <option value="Delivered">Delivered</option>
                                             <optgroup label="Pending">
                                                 <option value="Waiting">Waiting for Approval</option>
                                                 <option value="Cancelled">Cancelled</option>
-                                            </optgroup>
+                                            </optgroup> */}
                                             </select>
                                             <label htmlFor="floatingSelectGrid">
                                                 PO Status *
