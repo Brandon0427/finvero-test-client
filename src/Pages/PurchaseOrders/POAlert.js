@@ -26,7 +26,7 @@ const date = (year + "-" + month + "-" + day);
 
 let confirmButton = false;
 
-let requiredValuesFilled = [false, false, false, false, true];
+let requiredValuesFilled = [false, true, false, false, true];
 
 const AlertAddPO = () => {
     const showAddalert = useSelector(state => (state.POAlert.addPOisOpen));
@@ -34,7 +34,7 @@ const AlertAddPO = () => {
     const dispatch = useDispatch();
 
     const [poCreatorInput, setPOCreatorInput] = useState("");
-    const [poStatusInput, setPOStatusInput] = useState("");
+    const [poStatusInput, setPOStatusInput] = useState("Requested");
 
     const [dateInput, setDateInput] = useState(date);
     const [titleInput, setTitleInput] = useState("");
@@ -86,9 +86,9 @@ const AlertAddPO = () => {
     function resetPOValues(){
 
         //Reset Input values
-        requiredValuesFilled = [false, false, false, false, true];
+        requiredValuesFilled = [false, true, false, false, true];
         setPOCreatorInput("");
-        setPOStatusInput("");
+        setPOStatusInput("Requested");
         setDateInput(date);
         setTitleInput("");
         setSupplierInput("");
@@ -286,11 +286,7 @@ const AlertAddPO = () => {
                                                 onChange={handleInputChange}
                                                 required
                                             >
-                                            <option disabled selected value="">
-                                                Select an Option
-                                            </option>
                                             <option value="Requested">Requested</option>
-                                            <option value="Approved">Not Defined</option>
                                             {/* <option value="Approved">Approved</option>
                                             <option value="Ordered">Ordered</option>
                                             <option value="Delivered">Delivered</option>

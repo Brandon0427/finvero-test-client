@@ -399,11 +399,11 @@ const PurchaseOrder = () => {
                                 <table className="table align-middle table-nowrap" id="customerTable">
                                     <thead className="table-light">
                                         <tr>
-                                            <th scope="col" style={{ width: "50px" }}>
+                                            {/* <th scope="col" style={{ width: "50px" }}>
                                                 <div className="form-check">
                                                     <input className="form-check-input" type="checkbox" id="checkAll" onChange={() => tog_list(0, true, selectAllItems)} checked={selectAllItems}/>
                                                 </div>
-                                            </th>
+                                            </th> */}
                                             <th className="sort" data-sort="id">ID</th>
                                             <th className="sort" data-sort="email">Title</th>
                                             <th className="sort" data-sort="customer_name">Supplier</th>
@@ -418,11 +418,11 @@ const PurchaseOrder = () => {
                                         {data.slice(startPODisplay, endPODisplay).map((eachPO, index) => (
 
                                             <tr key={index}>
-                                                <th scope="row">
+                                                {/* <th scope="row">
                                                     <div className="form-check">
                                                         <input className="form-check-input" type="checkbox" name="chk_child" onChange={() => tog_list((index + startPODisplay), false, eachPO.checkedItem)} checked={eachPO.checkedItem}/>
                                                     </div>
-                                                </th>
+                                                </th> */}
                                                 <td className="id">
                                                     <Link 
                                                         to={"/purchase-orders/" + eachPO.title + "/PO" + eachPO.poID + "/" + eachPO._id}
@@ -459,7 +459,6 @@ const PurchaseOrder = () => {
                                                         return( 
                                                             <td className="status"><span className="badge badge-soft-primary text-uppercase">{eachPO.poStatus}</span></td>
                                                         )
-                                                    
 
                                                     case 'Delivered':
                                                         return( 
@@ -505,6 +504,9 @@ const PurchaseOrder = () => {
 
                                         {isLoading ? 
                                             <tr index={1}>
+                                                <td/>
+                                                <td/>
+                                                <td/>
                                                 <td>
                                                     <div>
                                                         <Spinner color="primary" size="sm">
