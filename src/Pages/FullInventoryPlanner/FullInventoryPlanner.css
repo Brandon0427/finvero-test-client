@@ -1,0 +1,55 @@
+.cardTitleRow{
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.cardTitle{
+    width: auto;
+    margin-bottom: 0;
+    padding-top: 2.5px;
+}
+
+.cardTitleIcon{
+    width: auto;
+    height: auto;
+    font-size: 20px;
+    padding-top: 0;
+}
+
+.boldText{
+    font-weight: bold;
+}
+
+.italicText{
+    font-style: italic;
+}
+
+.rightTextAlign{
+    text-align: end;
+}
+
+.centerTextAlign{
+    text-align: center;
+}
+
+.autoWidth{
+    width: auto !important;
+}
+
+.autoHeight{
+    height: auto !important;
+}
+
+.buttonDropdown{
+    height: 40px;
+    width: 100%;
+}
+
+.marginsOptions{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.templateButton{
+    color: white;
+  }

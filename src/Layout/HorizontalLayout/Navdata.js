@@ -83,6 +83,10 @@ const Navdata = () => {
           url: "/purchase-orders",
         },
         {
+          label2: "Full Inventory Planner",
+          url: "/full-inventory-planner",
+        },
+        {
           label2: "Calendar",
           url: "/calendar",
         },

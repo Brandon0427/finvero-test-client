@@ -18,6 +18,12 @@ const SidebarData = [
         url: "/purchase-orders",
     },
     {
+        label: "Full Inventory Planner",
+        icon: "mdi mdi-storefront-outline",
+        isHasArrow: true,
+        url: "/full-inventory-planner",
+    },
+    {
         label: "Calendar",
         icon: "mdi mdi-calendar-outline",
         isHasArrow: true,

@@ -8,6 +8,9 @@ import Dashboard from "../Pages/Dashboard";
 import PurchaseOrders from "../Pages/PurchaseOrders";
 import IndividualPO from "../Pages/PurchaseOrders/IndividualPO";
 
+// Full Inventory Planner
+import FullInventoryPlanner from "../Pages/FullInventoryPlanner";
+
 // Import Calender
 import Calender from "../Pages/Calender";
 
@@ -100,12 +103,16 @@ import GoogleMap from "../Pages/Maps/GoogleMap";
 
 
 const authProtectedRoutes = [
-  //dashboard
+  // Dashboard
   { path: "/dashboard", component: <Dashboard /> },
 
-  //purchaseorders
+  // Purchaseorders
   { path: "/purchase-orders", component: <PurchaseOrders /> },
   { path: "/purchase-orders/:title/:poID/:id", component: <IndividualPO />},
+
+  // Full Inventory Planner
+  { path: "/full-inventory-planner", component: <FullInventoryPlanner />},
+
 
   // Calender
   { path: "/calendar", component: <Calender /> },

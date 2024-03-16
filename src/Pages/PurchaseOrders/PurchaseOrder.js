@@ -68,7 +68,7 @@ const PurchaseOrder = () => {
         const fetchData = async () => {
             setisLoading(true);
 
-            const responseDataPurchaseOrders = await axios.get("https://mongodb-api-optidashboard.herokuapp.com/purchase-order");
+            const responseDataPurchaseOrders = await axios.get("https://mongodb-services-c52a87937804.herokuapp.com/purchase-order");
             setDataPurchaseOrders(responseDataPurchaseOrders.data);
             data = responseDataPurchaseOrders;
 
@@ -86,7 +86,7 @@ const PurchaseOrder = () => {
     async function resetPage(refresh){
 
         setisLoading(true);
-        const responseDataPurchaseOrders = await axios.get("https://mongodb-api-optidashboard.herokuapp.com/purchase-order");
+        const responseDataPurchaseOrders = await axios.get("https://mongodb-services-c52a87937804.herokuapp.com/purchase-order");
         setDataPurchaseOrders(responseDataPurchaseOrders.data);
         data = []
         data = responseDataPurchaseOrders;
@@ -247,9 +247,9 @@ const PurchaseOrder = () => {
     }
 
     async function deleteData(dataIndex){
-        await axios.delete('https://mongodb-api-optidashboard.herokuapp.com/purchase-order/' + data[dataIndex]._id)
+        await axios.delete('https://mongodb-services-c52a87937804.herokuapp.com/purchase-order/' + data[dataIndex]._id)
 
-        const responseDataPurchaseOrders = await axios.get("https://mongodb-api-optidashboard.herokuapp.com/purchase-order");
+        const responseDataPurchaseOrders = await axios.get("https://mongodb-services-c52a87937804.herokuapp.com/purchase-order");
         setDataPurchaseOrders(responseDataPurchaseOrders.data);
         data = []
         data = responseDataPurchaseOrders;

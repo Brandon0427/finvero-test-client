@@ -66,7 +66,7 @@ const AlertEditPO = (props) => {
                 additionalComments: additionalCommentsPO.trim(),
                 checkedItem: false
             }),  
-            url: ('https://mongodb-api-optidashboard.herokuapp.com/purchase-order/' + idPO)
+            url: ('https://mongodb-services-c52a87937804.herokuapp.com/purchase-order/' + idPO)
         }
 
         await axios.patch(

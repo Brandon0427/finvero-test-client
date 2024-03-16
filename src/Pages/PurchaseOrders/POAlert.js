@@ -66,7 +66,7 @@ const AlertAddPO = () => {
                 checkedItem: false,
 
             }),
-            url: 'https://mongodb-api-optidashboard.herokuapp.com/purchase-order'
+            url: 'https://mongodb-services-c52a87937804.herokuapp.com/purchase-order'
         }
 
         await axios.post(
