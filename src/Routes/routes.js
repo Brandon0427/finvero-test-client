@@ -107,11 +107,11 @@ const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
 
   // Purchaseorders
-  { path: "/purchase-orders", component: <PurchaseOrders /> },
-  { path: "/purchase-orders/:title/:poID/:id", component: <IndividualPO />},
+  // { path: "/purchase-orders", component: <PurchaseOrders /> },
+  // { path: "/purchase-orders/:title/:poID/:id", component: <IndividualPO />},
 
   // Full Inventory Planner
-  { path: "/full-inventory-planner", component: <FullInventoryPlanner />},
+  // { path: "/full-inventory-planner", component: <FullInventoryPlanner />},
 
 
   // Calender
@@ -190,11 +190,17 @@ const authProtectedRoutes = [
 
   // this route should be at the end of all other routes
   // eslint-disable-next-line react/display-name
-  {
-    path: "/",
-    exact: true,
-    component: <Navigate to="/dashboard" />,
-  },
+  // {
+  //   path: "/",
+  //   exact: true,
+  //   component: <Navigate to="/dashboard" />,
+  // },
+
+  // {
+  //   path: "/",
+  //   exact: true,
+  //   component: <Navigate to="/full-inventory-planner" />,
+  // },
 ];
 
 const publicRoutes = [
@@ -216,6 +222,21 @@ const publicRoutes = [
   { path: "/pages-500", component: <Error500 /> },
   { path: "/pages-maintenance", component: <Maintenance /> },
   { path: "/pages-comingsoon", component: <ComingSoon /> },
+
+  // These routes should be private, but login validation methods are not stated yet
+  // Purchaseorders
+  { path: "/purchase-orders", component: <PurchaseOrders /> },
+  { path: "/purchase-orders/:title/:poID/:id", component: <IndividualPO />},
+
+  // // Full Inventory Planner
+  { path: "/full-inventory-planner", component: <FullInventoryPlanner />},
+
+  //Home Redirecting
+  {
+    path: "/",
+    exact: true,
+    component: <Navigate to="/full-inventory-planner" />,
+  }
 ];
 
 export { authProtectedRoutes, publicRoutes };

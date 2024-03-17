@@ -22,7 +22,7 @@ const Breadcrumbs = (props) => {
                     switch (props.iconSection) {
                       case 'Menu':
                         return (
-                          <Link to="/dashboard">
+                          <Link to="/">
                             <i className="mdi mdi-menu"></i>
                           </Link>
                         )
