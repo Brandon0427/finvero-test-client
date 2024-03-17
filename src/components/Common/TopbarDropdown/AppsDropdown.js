@@ -38,8 +38,6 @@ const [singlebtn, setSinglebtn] = useState(false);
 
             <div className="px-lg-2">
               <SimpleBar >
-
-
                 <Row className="g-0">
                   <Col>
                     <Link className="dropdown-icon-item" to="#">
