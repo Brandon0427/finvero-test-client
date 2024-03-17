@@ -33,7 +33,7 @@ window.env = {
   "PWD": "/Users/brandonnajera/Desktop/ /Web Development/Projects MERN/Opti-Dashboard/Client/Admin",
   "npm_lifecycle_event": "start",
   "EDITOR": "vi",
-  "npm_package_name": "upzet-react",
+  "npm_package_name": "opti-dashboard",
   "LANG": "en_US.UTF-8",
   "npm_config_npm_version": "9.8.1",
   "XPC_FLAGS": "0x0",

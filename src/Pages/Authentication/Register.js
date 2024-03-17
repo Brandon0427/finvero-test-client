@@ -71,8 +71,6 @@ const Register = props => {
                                 </Link>
                             </div>
 
-                            <h4 className="font-size-18 text-muted text-center mt-2">Free Register</h4>
-                            <p className="text-muted text-center mb-4">Get your free Upzet account now.</p>
                             <Form
                                 className="form-horizontal"
                                 onSubmit={(e) => {
@@ -148,7 +146,7 @@ const Register = props => {
                                         </div>
                                         <div className="form-check">
                                             <input type="checkbox" className="form-check-input" id="term-conditionCheck" />
-                                            <label className="form-check-label fw-normal" htmlFor="term-conditionCheck">I accept <Link to="#" className="text-primary">Terms and Conditions</Link></label>
+                                            <label className="form-check-label fw-normal" htmlFor="term-conditionCheck">I accept the Terms and Conditions</label>
                                         </div>
                                         <div className="d-grid mt-4">
                                             <button className="btn btn-primary waves-effect waves-light" type="submit">Register</button>
@@ -160,7 +158,9 @@ const Register = props => {
                     </Card>
                     <div className="mt-5 text-center">
                         <p className="text-white-50">Already have an account ?<Link to="/login" className="fw-medium text-primary"> Login </Link> </p>
-                        <p className="text-white-50">© {new Date().getFullYear()} Upzet. Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesdesign</p>
+                        <p className="text-white-50">
+                © {new Date().getFullYear()} Lentes de Moda
+              </p>
                     </div>
                 </Col>
             </Row>

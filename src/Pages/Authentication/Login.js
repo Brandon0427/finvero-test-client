@@ -27,7 +27,7 @@ import { loginUser, socialLogin } from "../../store/actions";
 import { facebook, google } from "../../config";
 
 const Login = props => {
-  document.title = "Login | Upzet - React Admin & Dashboard Template";
+  document.title = "Login | Optidashboard";
 
   const dispatch = useDispatch();
 
@@ -126,10 +126,10 @@ const Login = props => {
                     </Link>
                   </div>
                   <h4 className="font-size-18 text-muted mt-2 text-center">
-                    Welcome Back ! XD
+                    Welcome Back!
                   </h4>
                   <p className="mb-5 text-center">
-                    Sign in to continue to Upzet.
+                    Sign in to continue to Optidashboard.
                   </p>
                   <Form
                     className="form-horizontal"
@@ -215,7 +215,7 @@ const Login = props => {
                           </button>
                         </div>
                         <div className="mt-4 text-center">
-                      <h5 className="font-size-14 mb-3">Sign in with</h5>
+                      {/* <h5 className="font-size-14 mb-3">Sign in with</h5>
 
                       <ul className="list-inline">
                         <li className="list-inline-item">
@@ -251,7 +251,7 @@ const Login = props => {
                             onFailure={() => { }}
                           />
                         </li>
-                      </ul>
+                      </ul> */}
                     </div>
 
                       </Col>
@@ -269,8 +269,7 @@ const Login = props => {
                 </Link>{" "}
               </p>
               <p className="text-white-50">
-                © {new Date().getFullYear()} Upzet. Crafted with{" "}
-                <i className="mdi mdi-heart text-danger"></i> by Themesdesign
+                © {new Date().getFullYear()} Lentes de Moda
               </p>
             </div>
           </Col>

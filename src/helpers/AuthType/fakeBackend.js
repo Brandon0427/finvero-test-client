@@ -12,6 +12,14 @@ let users = [
     password: "123456",
     email: "admin@Themesdesign.com",
   },
+
+  {
+    uid: 2,
+    username: "brandon",
+    role: "admin",
+    password: "Brandonnajera1",
+    email: "najera04271998@gmail.com",
+  },
 ];
 
 const fakeBackend = () => {
