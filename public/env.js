@@ -45,7 +45,7 @@ window.env = {
   "HOMEBREW_PREFIX": "/opt/homebrew",
   "npm_config_cache": "/Users/brandonnajera/.npm",
   "LOGNAME": "brandonnajera",
-  "npm_lifecycle_script": "react-dotenv && react-scripts --openssl-legacy-provider start",
+  "npm_lifecycle_script": "react-dotenv && serve -s build",
   "npm_config_user_agent": "npm/9.8.1 node/v18.16.0 darwin arm64 workspaces/false",
   "INFOPATH": "/opt/homebrew/share/info:",
   "HOMEBREW_CELLAR": "/opt/homebrew/Cellar",
