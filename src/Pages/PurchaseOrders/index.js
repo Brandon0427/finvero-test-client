@@ -5,6 +5,7 @@ import PurchaseOrder from "./PurchaseOrder";
 
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 
+import logosm from "../../assets/images/logo-sm.png";
 import logolight from "../../assets/images/logo-light.png";
 
 import {
@@ -27,6 +28,9 @@ const PurchaseOrders = () => {
                     <div className="d-flex">
                         <div className="navbar-brand-box text-center">
                             <a href="/" className="logo logo-dark">
+                            <span className="logo-sm">
+                                <img src={logosm} alt="logo-sm-light" height="22" />
+                            </span>
                                 <span className="logo-lg">
                                     <img src={logolight} alt="logo-dark" height="24" />
                                 </span>
@@ -37,7 +41,7 @@ const PurchaseOrders = () => {
                         isOpen={btnDropdownActions}
                         toggle={() => setBtnDropdownActions(!btnDropdownActions)}
                         className="d-inline-block d-sm-inline-block"
-                        style={{paddingRight:"50px"}}
+                        style={{paddingRight:"25px"}}
                     >
                         <DropdownToggle className="btn header-item waves-effect" tag="button">
                             <i className="mdi mdi-apps font-size-24"/>
