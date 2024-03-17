@@ -71,3 +71,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 ## Reources
 [Environment Variables in React](https://www.npmjs.com/package/react-dotenv)
+[NPM --legacy-peer-deps Explanation](https://stackoverflow.com/questions/66239691/what-does-npm-install-legacy-peer-deps-do-exactly-when-is-it-recommended-wh)
+[.npmrc File](https://stackoverflow.com/questions/72944475/how-do-i-do-npm-install-force-on-heroku)
+[Solving Memory Quota Error on Deployment](https://stackoverflow.com/questions/44765687/create-react-app-r14-memory-quota-exceeded-on-heroku)
+[Serve npm Module](https://snyk.io/advisor/npm-package/serve-build)
