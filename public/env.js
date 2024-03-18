@@ -53,7 +53,7 @@ window.env = {
   "npm_node_execpath": "/usr/local/bin/node",
   "npm_config_prefix": "/usr/local",
   "COLORTERM": "truecolor",
-  "MONGO_DB_SERVER": "https://mongodb-services-c52a87937804.herokuapp.com",
   "MYSQL_DB_SERVER": "https://optioutlet-mysql-server-4796de489d28.herokuapp.com",
-  "MERCADOLIBRE_SERVER": "https://mercadolibre-ldm-api-server-794442524e13.herokuapp.com"
+  "MERCADOLIBRE_SERVER": "https://mercadolibre-ldm-api-server-794442524e13.herokuapp.com",
+  "MONGO_DB_SERVER": "http://localhost:5001"
 };

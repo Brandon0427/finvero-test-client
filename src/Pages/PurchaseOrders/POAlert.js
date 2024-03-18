@@ -7,6 +7,8 @@ import { openAddPOType } from "../../store/actions";
 
 import axios from 'axios';
 
+import env from "react-dotenv";
+
 const currentDate = new Date();
 
 const year = currentDate.getFullYear();
@@ -66,7 +68,7 @@ const AlertAddPO = () => {
                 checkedItem: false,
 
             }),
-            url: 'https://mongodb-services-c52a87937804.herokuapp.com/purchase-order'
+            url: (env.MONGO_DB_SERVER + '/purchase-order')
         }
 
         await axios.post(

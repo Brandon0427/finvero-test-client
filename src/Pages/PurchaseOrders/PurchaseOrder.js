@@ -28,6 +28,8 @@ import 'react-toastify/dist/ReactToastify.css'
 import AlertAddPO from './POAlert.js'
 import AlertEditPO from './POEditAlert.js'
 
+import env from "react-dotenv";
+
 let data = []
 
 let listElements = 5;
@@ -68,7 +70,7 @@ const PurchaseOrder = () => {
         const fetchData = async () => {
             setisLoading(true);
 
-            const responseDataPurchaseOrders = await axios.get("https://mongodb-services-c52a87937804.herokuapp.com/purchase-order");
+            const responseDataPurchaseOrders = await axios.get(env.MONGO_DB_SERVER + '/purchase-order');
             setDataPurchaseOrders(responseDataPurchaseOrders.data);
             data = responseDataPurchaseOrders;
 
@@ -86,7 +88,7 @@ const PurchaseOrder = () => {
     async function resetPage(refresh){
 
         setisLoading(true);
-        const responseDataPurchaseOrders = await axios.get("https://mongodb-services-c52a87937804.herokuapp.com/purchase-order");
+        const responseDataPurchaseOrders = await axios.get(env.MONGO_DB_SERVER + '/purchase-order');
         setDataPurchaseOrders(responseDataPurchaseOrders.data);
         data = []
         data = responseDataPurchaseOrders;
@@ -247,9 +249,9 @@ const PurchaseOrder = () => {
     }
 
     async function deleteData(dataIndex){
-        await axios.delete('https://mongodb-services-c52a87937804.herokuapp.com/purchase-order/' + data[dataIndex]._id)
+        await axios.delete(env.MONGO_DB_SERVER + '/purchase-order/' + data[dataIndex]._id)
 
-        const responseDataPurchaseOrders = await axios.get("https://mongodb-services-c52a87937804.herokuapp.com/purchase-order");
+        const responseDataPurchaseOrders = await axios.get(env.MONGO_DB_SERVER + '/purchase-order');
         setDataPurchaseOrders(responseDataPurchaseOrders.data);
         data = []
         data = responseDataPurchaseOrders;

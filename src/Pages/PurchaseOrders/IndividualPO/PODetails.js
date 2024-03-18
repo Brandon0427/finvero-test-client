@@ -26,6 +26,8 @@ import Template from '../../../assets/documents/Excel Template PO Optioutlet.xls
 import qs from 'qs';
 import axios from 'axios';
 
+import env from "react-dotenv";
+
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -70,7 +72,7 @@ const DownloadDetailsButton = () => {
 
     useEffect( () => {
         async function fetchData(){
-            const responseAPI = await axios.get("https://mongodb-services-c52a87937804.herokuapp.com/purchase-order/" + params.id);
+            const responseAPI = await axios.get(env.MONGO_DB_SERVER + '/purchase-order/' + params.id);
             setDataPurchaseOrders(responseAPI.poDetails);
             setPageNumber(responseAPI.poID)
 
@@ -83,7 +85,7 @@ const DownloadDetailsButton = () => {
 
     async function getData(){
         setTemporaryLoading(true);
-        const responseAPI = await axios.get("https://mongodb-services-c52a87937804.herokuapp.com/purchase-order/" + params.id);
+        const responseAPI = await axios.get(env.MONGO_DB_SERVER + '/purchase-order/' + params.id);
         setDataPurchaseOrders(responseAPI.details);
         setTemporaryLoading(false);
 
@@ -144,7 +146,7 @@ const PODetailsRender = () => {
             setTemporaryLoading(true);
             if (poNumber === 0){
                 // eslint-disable-next-line react-hooks/exhaustive-deps
-                responseAPI = await axios.get("https://mongodb-services-c52a87937804.herokuapp.com/purchase-order/" + params.id);
+                responseAPI = await axios.get(env.MONGO_DB_SERVER + '/purchase-order/' + params.id);
                 setDataPurchaseOrders({
                     title: responseAPI.title,
                     poDate: responseAPI.poDate,
@@ -303,7 +305,7 @@ const InitialTable = () => {
             let countTogglesBoolean = true;
 
             // eslint-disable-next-line react-hooks/exhaustive-deps
-            responseAPI = await axios.get("https://mongodb-services-c52a87937804.herokuapp.com/purchase-order/" + params.id);
+            responseAPI = await axios.get(env.MONGO_DB_SERVER + '/purchase-order/' + params.id);
 
             if(responseAPI.hasOwnProperty("poDetails")){
                 responseAPI.poDetails.forEach((detail, index) => {
@@ -640,7 +642,7 @@ const InitialTable = () => {
                 poDetails: inputData,
                 poStatus: mainStatus
             }),  
-            url: ('https://mongodb-services-c52a87937804.herokuapp.com/purchase-order/' + params.id)
+            url: (env.MONGO_DB_SERVER + '/purchase-order/' + params.id)
         }
 
         try{
@@ -906,7 +908,7 @@ const ConfirmChanges = () => {
                 poDetails: verifiedJson,
                 poStatus: mainStatus
             }),  
-            url: ('https://mongodb-services-c52a87937804.herokuapp.com/purchase-order/' + params.id)
+            url: (env.MONGO_DB_SERVER + '/purchase-order/' + params.id)
         }
 
         try{
@@ -1009,7 +1011,7 @@ class PODetails extends Component {
     componentDidMount(){
         //Como no se puede utilizar el metodo useParams() en una clase, utilizo Vanilla Js para obtener el url y de ahi extraigo la informacion deseada por medio de los separadores de categoria "/"
         const id = window.location.href.split('/')[6]
-        axios.get("https://mongodb-services-c52a87937804.herokuapp.com/purchase-order/" + id).then(({poStatus}) => {
+        axios.get(env.MONGO_DB_SERVER + '/purchase-order/' + id).then(({poStatus}) => {
             if(poStatus === "Ordered" || poStatus === "Delivered"){
                 this.setState({poIsOrdered: true});
             }

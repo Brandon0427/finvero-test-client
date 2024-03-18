@@ -7,6 +7,8 @@ import { openEditType } from "../../store/actions";
 
 import axios from 'axios';
 
+import env from "react-dotenv";
+
 const currentDate = new Date();
 
 const year = currentDate.getFullYear();
@@ -57,6 +59,7 @@ const AlertEditPO = (props) => {
                 "Access-Control-Allow-Origin": "*",
             },
             data: qs.stringify({
+                id: numberPO,
                 supplier: supplierPO.trim(),
                 title: titlePO.trim(),
                 description: descriptionPO.trim(),
@@ -66,7 +69,7 @@ const AlertEditPO = (props) => {
                 additionalComments: additionalCommentsPO.trim(),
                 checkedItem: false
             }),  
-            url: ('https://mongodb-services-c52a87937804.herokuapp.com/purchase-order/' + idPO)
+            url: (env.MONGO_DB_SERVER + '/purchase-order/' + idPO)
         }
 
         await axios.patch(
