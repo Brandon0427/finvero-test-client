@@ -67,7 +67,7 @@ const LatestTransation = ({asyncProps}) => {
                                                 <p className="mb-1 font-size-12">{item.description}</p>
                                             </td>
                                             <td>{item.value_date}</td>
-                                            <td>$ {item.amount}</td>
+                                            <td><NumericFormat value={Number(item.amount).toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} /></td>
                                             <td>{item.category}</td>
 
                                             <td>
