@@ -31,7 +31,7 @@ window.env = {
   "__CFBundleIdentifier": "co.zeit.hyper",
   "npm_command": "run-script",
   "PWD": "/Users/brandonnajera/Desktop/ /Web Development/Projects MERN/Technical Test Finvero/Frontend",
-  "npm_lifecycle_event": "build",
+  "npm_lifecycle_event": "dev",
   "EDITOR": "vi",
   "npm_package_name": "opti-dashboard",
   "LANG": "en_US.UTF-8",
@@ -45,7 +45,7 @@ window.env = {
   "HOMEBREW_PREFIX": "/opt/homebrew",
   "npm_config_cache": "/Users/brandonnajera/.npm",
   "LOGNAME": "brandonnajera",
-  "npm_lifecycle_script": "react-dotenv && react-scripts build",
+  "npm_lifecycle_script": "react-dotenv && react-scripts start",
   "npm_config_user_agent": "npm/9.8.1 node/v18.16.0 darwin arm64 workspaces/false",
   "INFOPATH": "/opt/homebrew/share/info:",
   "HOMEBREW_CELLAR": "/opt/homebrew/Cellar",
@@ -53,9 +53,6 @@ window.env = {
   "npm_node_execpath": "/usr/local/bin/node",
   "npm_config_prefix": "/usr/local",
   "COLORTERM": "truecolor",
-  "MONGO_DB_SERVER": "https://mongodb-services-c52a87937804.herokuapp.com",
-  "MYSQL_DB_SERVER": "https://optioutlet-mysql-server-4796de489d28.herokuapp.com",
-  "MERCADOLIBRE_SERVER": "https://mercadolibre-ldm-api-server-794442524e13.herokuapp.com",
   "FINVERO_TEST_SERVER": "http://localhost:5005",
   "FINVERO_TEST_VALID_TOKEN": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoidGVzdEBtYWlsLmNvbSIsImlhdCI6MTcxMzEzMjkzNiwiZXhwIjoxNzEzMTM2NTM2fQ.o-kBrYGej8Gdj1z3asrrtykPFA8rTdq0f2veImoD_lU"
 };
