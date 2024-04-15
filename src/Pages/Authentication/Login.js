@@ -1,7 +1,5 @@
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import logolight from "../../assets/images/logo-light.png";
-import logodark from "../../assets/images/logo-dark.png";
 import { useNavigate } from 'react-router-dom';
 
 import { Button, Row, Col, CardBody, Card, Alert, Container, Form, Input, Label } from "reactstrap";
@@ -93,12 +91,6 @@ async function handleSubmit (){
             <Col lg={6} md={8} xl={4}>
                 <Card className='mt-5'>
                     <CardBody className="p-4">
-                        <div className="text-center">
-                            <Link to="/" className="">
-                                <img src={logodark} alt="" height="24" className="auth-logo logo-dark mx-auto" />
-                                <img src={logolight} alt="" height="24" className="auth-logo logo-light mx-auto" />
-                            </Link>
-                        </div>
 
                         <Form
                             className="form-horizontal"

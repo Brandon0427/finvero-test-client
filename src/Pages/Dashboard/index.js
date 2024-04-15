@@ -18,8 +18,9 @@ import env from "react-dotenv";
 import axios from 'axios';
 
 const Dashboard = () => {
-  document.title = "Dashboard | Optioutlet";
+  document.title = "Dashboard | Finvero Test";
 
+  //Rertieval of Navigation Vars from previous steps
   const {state} = useLocation();
   const { accessToken } = state;
   const validToken = 'Bearer ' + accessToken;
@@ -317,7 +318,7 @@ const Dashboard = () => {
       <header id="page-topbar">
         <div className="navbar-header" style={{backgroundColor:"#212634", paddingLeft: '25px'}}>
             <h3 style={{color:"#F9F9F9"}}>
-              {'¡ Bienvenido ' + userNameTitle + ' !'}
+              {'Welcome ' + userNameTitle + ' !'}
             </h3>
         </div>
       </header>

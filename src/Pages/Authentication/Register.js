@@ -10,10 +10,6 @@ import { useDispatch } from "react-redux";
 
 import { Link } from "react-router-dom";
 
-// import images
-import logolight from '../../assets/images/logo-light.png';
-import logodark from '../../assets/images/logo-dark.png';
-
 // Environment Variables
 import env from "react-dotenv";
 
@@ -168,12 +164,6 @@ const Register = props => {
                     <Col lg={6} md={8} xl={4}>
                         <Card className='mt-5'>
                             <CardBody className="p-4">
-                                <div className="text-center">
-                                    <Link to="/" className="">
-                                        <img src={logodark} alt="" height="24" className="auth-logo logo-dark mx-auto" />
-                                        <img src={logolight} alt="" height="24" className="auth-logo logo-light mx-auto" />
-                                    </Link>
-                                </div>
 
                                 <Form
                                     className="form-horizontal"
