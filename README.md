@@ -1,77 +1,149 @@
-# Getting Started with Create React App
+# Nest.js Backend Finvero Test Server
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Description
 
-## Available Scripts
+This software is a cutting-edge financial application crafted using React, aimed at revolutionizing your banking interactions. This application enables users to seamlessly engage with their diverse bank accounts and transactions through an intuitive interface (through Belvo APIs).
 
-In the project directory, you can run:
+## Features
 
-### `yarn start`
+- **Unified Banking Experience**: Access and manage multiple bank accounts effortlessly from a centralized platform.
+- **Transaction Management**: Clients can easily view, categorize, and track transactions across all linked accounts in real-time.
+- **RESTful APIs:**: Implements RESTful APIs for seamless communication with server appl.
+- **Interactive Dashboard**: Gain valuable insights into spending patterns, account balances, and financial trends with interactive visual representations.
+- **Secure Authentication**: Robust authentication mechanisms and encryption techniques ensure the security of our clients' financial data.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Technologies used
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Node.js
 
-### `yarn test`
+- React.js
+- React Router Dom
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Typescript
 
-### `yarn build`
+- Procedural Programming Paradigm
+- Object-Oriented Programming Paradigm
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Getting Started
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1.  Open your preferred command line interface (CLI).
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+2.  Clone the project with:
 
-### `yarn eject`
+* * *
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+>       git clone 'https://github.com/Brandon0427/finvero-test-client.git'
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+* * *
+    
+3.  Execute the following command to download all the dependencies and update the package-lock.json:
+* * *
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+>       npm i
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+* * *
+    
+4.  Head to the root of the directory of this project and create a .env file.
+    
+5.  Inside the .env file add the following secrets (you must sustitute to the actual values):
 
-## Learn More
+*Server Credentials*
+- FINVERO_TEST_SERVER=xxxxxxxxxx
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Launching the project
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Local Execution on Dev Encironment
 
-### Code Splitting
+1.  Run the initialization.
+    *The original code of the server will execute on **localhost:3000***
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+* * *
 
-### Analyzing the Bundle Size
+>       npm run dev
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+* * *
 
-### Making a Progressive Web App
+2.  Register a New User and wait a few seconds for the environment creation.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+3.  Enjoy the dashboard!
 
-### Advanced Configuration
+### Local Execution on Prod Environment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+1.  Build the project.
 
-### Deployment
+* * *
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+>       npm run build
 
-### `yarn build` fails to minify
+* * *
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+2.  Run the initialization.
 
-## Reources
-[Environment Variables in React](https://www.npmjs.com/package/react-dotenv)
-[NPM --legacy-peer-deps Explanation](https://stackoverflow.com/questions/66239691/what-does-npm-install-legacy-peer-deps-do-exactly-when-is-it-recommended-wh)
-[.npmrc File](https://stackoverflow.com/questions/72944475/how-do-i-do-npm-install-force-on-heroku)
-[Solving Memory Quota Error on Deployment](https://stackoverflow.com/questions/44765687/create-react-app-r14-memory-quota-exceeded-on-heroku)
-[Serve npm Module](https://snyk.io/advisor/npm-package/serve-build)
+* * *
+
+>       npm run start
+
+* * *
+
+3.  Register a New User and wait a few seconds for the environment creation.
+
+4.  Enjoy the dashboard!
+
+## Updating the project
+
+1.  Open your preferred Command Line Interface (CLI).
+2.  Change to *main* branch of the project:
+
+* * *
+
+>       git checkout main
+
+* * *
+
+3.  Update the project with the latest changes on *main* or the most updated branch:
+
+* * *
+
+>       git pull origin main
+
+* * *
+
+4.  Create a **new branch** out of the *main* branch:
+
+* * *
+
+>       git checkout -b <new-branch-name>
+
+* * *
+
+5.  Hackerman time!
+6.  Commit the changes locally with:
+
+* * *
+
+>       git add .
+>       git commit -m "Hackerman changes made to the branch!"
+
+* * *
+
+7.  Push the changes of your **new branch** to the project:
+
+* * *
+
+>       git push -u origin <new-branch-name>
+
+* * *
+
+## Project status
+
+Main branch of the project is fully developed as for the purpose of the projects
+
+## Useful Information
+- It is imperative that the app is running while also the finvero-server is running, else it won't work.
+- This frontend was built with a previosly designed template (to achieve better UI/UX). However the only interactive routes (with its corresponding modules) for the test are: '/', '/login', '/register', '/dashboard'
+
+## Sources
+
+### Nest.js
+
+- [README Syntax Documentation](https://github.com/ricval/Documentacion/blob/master/Markdown/daringfireball/syntax.md?plain=1)

@@ -53,6 +53,5 @@ window.env = {
   "npm_node_execpath": "/usr/local/bin/node",
   "npm_config_prefix": "/usr/local",
   "COLORTERM": "truecolor",
-  "FINVERO_TEST_SERVER": "http://localhost:5005",
-  "FINVERO_TEST_VALID_TOKEN": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoidGVzdEBtYWlsLmNvbSIsImlhdCI6MTcxMzEzMjkzNiwiZXhwIjoxNzEzMTM2NTM2fQ.o-kBrYGej8Gdj1z3asrrtykPFA8rTdq0f2veImoD_lU"
+  "FINVERO_TEST_SERVER": "http://localhost:5005"
 };
