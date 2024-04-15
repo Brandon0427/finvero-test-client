@@ -4,13 +4,6 @@ import { Navigate } from "react-router-dom";
 //Dashboard
 import Dashboard from "../Pages/Dashboard";
 
-//Purchase Orders
-import PurchaseOrders from "../Pages/PurchaseOrders";
-import IndividualPO from "../Pages/PurchaseOrders/IndividualPO";
-
-// Full Inventory Planner
-import FullInventoryPlanner from "../Pages/FullInventoryPlanner";
-
 // Import Calender
 import Calender from "../Pages/Calender";
 
@@ -118,13 +111,6 @@ const publicRoutes = [
   // Dashboard
   { path: "/dashboard", component: <Dashboard /> },
 
-  //Purchaseorders
-  { path: "/purchase-orders", component: <PurchaseOrders /> },
-  { path: "/purchase-orders/:title/:poID/:id", component: <IndividualPO />},
-
-  //Full Inventory Planner
-  { path: "/full-inventory-planner", component: <FullInventoryPlanner />},
-
   // Calender
   { path: "/calendar", component: <Calender /> },
 
@@ -218,12 +204,6 @@ const publicRoutes = [
   { path: "/pages-maintenance", component: <Maintenance /> },
   { path: "/pages-comingsoon", component: <ComingSoon /> },
 
-  // //Home Redirecting
-  // {
-  //   path: "/",
-  //   exact: true,
-  //   component: <Navigate to="/full-inventory-planner" />,
-  // }
 ];
 
 export { authProtectedRoutes, publicRoutes };
