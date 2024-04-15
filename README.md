@@ -140,7 +140,8 @@ Main branch of the project is fully developed as for the purpose of the projects
 
 ## Useful Information
 - It is imperative that the app is running while also the finvero-server is running, else it won't work.
-- This frontend was built with a previosly designed template (to achieve better UI/UX). However the only interactive routes (with its corresponding modules) for the test are: '/', '/login', '/register', '/dashboard'
+- This frontend was built with a previosly designed template (to achieve better UI/UX). However the only interactive routes (with its corresponding modules) for the test are: '/', '/login', '/register', '/dashboard'.
+- You might need to update your env.js to your corresponding local environment settings.
 
 ## Sources
 
