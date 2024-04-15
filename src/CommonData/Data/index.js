@@ -4,6 +4,9 @@ import {
   OverViewData,
   SocialSourceData,
   NotificationsData,
+  PersonalExpensesData,
+  FinancialTransactionsData,
+  FinancialObligationsData
 } from "./dashboard";
 
 import {calenderDefaultCategories, events} from "./calender";
@@ -14,6 +17,9 @@ export {
   OverViewData,
   SocialSourceData,
   NotificationsData,
+  PersonalExpensesData,
+  FinancialTransactionsData,
+  FinancialObligationsData,
   calenderDefaultCategories, 
   events
 };

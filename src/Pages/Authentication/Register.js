@@ -1,15 +1,12 @@
-import React, { useEffect } from "react";
-import { Row, Col, CardBody, Card, Alert, Container, Input, Label, Form, FormFeedback } from "reactstrap";
-
-// Formik Validation
-import * as Yup from "yup";
-import { useFormik } from "formik";
+import React, { useEffect, useState } from "react";
+import { Button, Row, Col, CardBody, Card, Alert, Container, Input, Label, Form } from "reactstrap";
+import { useNavigate } from 'react-router-dom';
 
 // action
-import { registerUser, apiError } from "../../store/actions";
+import { apiError } from "../../store/actions";
 
 //redux
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { Link } from "react-router-dom";
 
@@ -17,157 +14,260 @@ import { Link } from "react-router-dom";
 import logolight from '../../assets/images/logo-light.png';
 import logodark from '../../assets/images/logo-dark.png';
 
+// Environment Variables
+import env from "react-dotenv";
+
+//Axios Request Library
+import axios from 'axios';
+
 const Register = props => {
-    document.title = "Register | Optioutlet";
+    document.title = "Register | Finvero Test";
+    const navigate = useNavigate();
+
+    const [emailText, setEmailText] = useState('');
+    const [firstNameText, setFirstNameText] = useState('');
+    const [lastNameText, setLastNameText] = useState('');
+    const [passwordText, setPasswordText] = useState('');
+    const [confirmPasswordText, setConfirmPasswordText] = useState('');
+
+    const [emailInvalid, setEmailInvalid] = useState(false);
+    const [confirmPasswordInvalid, setConfirmPasswordInvalid] = useState(false);
+
+    const [submitButtonVisibility, setSubmitButtonVisibility] = useState(false);
+    const [errorAlertVisibility, setErrorAlertVisibility] = useState(false);
+    const [userCreationAlertVisibility, setUserCreationAlertVisibility] = useState(false);
+
+    const [errorAlertMessage, setErrorAlertMessage] = useState();
 
     const dispatch = useDispatch();
 
-    const validation = useFormik({
-    // enableReinitialize : use this flag when initial values needs to be changed
-    enableReinitialize: true,
+    useEffect(() => {
+        dispatch(apiError(""));
+    }, [dispatch]);
 
-    initialValues: {
-      email: '',
-      username: '',
-      password: '',
-    },
-    validationSchema: Yup.object({
-      email: Yup.string().required("Please Enter Your Email"),
-      username: Yup.string().required("Please Enter Your Username"),
-      password: Yup.string().required("Please Enter Your Password"),
-    }),
-    onSubmit: (values) => {
-      dispatch(registerUser(values));
+    const handleInputChange = (event) => {
+        let textValue = String(event.target.value).trim();
+
+        function allFieldsValidation(emailInvalid, confirmPasswordInvalid){
+            if(emailInvalid && confirmPasswordInvalid
+                && emailText && confirmPasswordText){
+                setSubmitButtonVisibility(true)
+            }else{
+                setSubmitButtonVisibility(false);
+            }
+        }
+
+        switch(event.target.name){
+            case 'email':
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                setEmailText(textValue);
+                //Setting Invalidation Field Alert
+                if(emailRegex.test(textValue)){
+                    setEmailInvalid(false);
+                    allFieldsValidation(true, !confirmPasswordInvalid)
+                }else{
+                    setEmailInvalid(true);
+                    setSubmitButtonVisibility(false);
+                }
+                break;
+            case 'firstname':
+                setFirstNameText(textValue);
+                break;
+            case 'lastname':
+                setLastNameText(textValue);
+                break;
+            case 'password':
+                setPasswordText(textValue);
+                //Setting Invalidation Field Alert
+                if(confirmPasswordText === textValue){
+                    setConfirmPasswordInvalid(false);
+                    allFieldsValidation(!emailInvalid, true)
+                }else{
+                    setConfirmPasswordInvalid(true);
+                    setSubmitButtonVisibility(false);
+                }
+                break;
+
+            case 'confirmpassword':
+                setConfirmPasswordText(textValue);
+                //Setting Invalidation Field Alert
+                if(passwordText === textValue){
+                    setConfirmPasswordInvalid(false);
+                    allFieldsValidation(!emailInvalid, true)
+                }else{
+                    setConfirmPasswordInvalid(true);
+                    setSubmitButtonVisibility(false);
+                }
+                break;
+            default:
+        }
     }
-  });
 
-  const { user, registrationError } = useSelector(state => ({
-    user: state.account.user,
-    registrationError: state.account.registrationError,
-  }));
+    async function handleSubmit (){
+        const requestURL = env.FINVERO_TEST_SERVER + "/auth/signup";
+        const data = {
+            email: emailText,
+            password: passwordText,
+            firstName: firstNameText,
+            lastName: lastNameText
+        }
 
-  // handleValidSubmit
-  // const handleValidSubmit = values => {
-  //   dispatch(registerUser(values));
-  // };
+        //This whole process takes a while as a user is created into the Database, and belvo Bank Accounts are associated with it!
+        await axios.post(requestURL, data).then((response) => {
+            setUserCreationAlertVisibility(true);
+            const requestforCreatingBankAccount = {
+                requestURL: env.FINVERO_TEST_SERVER + "/accounts",
+                data: {
+                    institution: 'gringotts_mx_retail',
+                    username: 'username',
+                    password: 'full'
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + response.accessToken
+                }
+            }
+            axios.post(requestforCreatingBankAccount.requestURL, requestforCreatingBankAccount.data, {headers: requestforCreatingBankAccount.headers})
+                .then(async () => {
+                    requestforCreatingBankAccount.data = {
+                        institution: 'erebor_mx_retail',
+                        username: 'username',
+                        password: 'full'
+                    }
+                    await axios.post(requestforCreatingBankAccount.requestURL, requestforCreatingBankAccount.data, {headers: requestforCreatingBankAccount.headers})
+                        .then(() => {
+                            setErrorAlertVisibility(false);
+                            navigate('/dashboard', { state: { accessToken: response.accessToken } })
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            setErrorAlertMessage('Erebor Account could not be created');
+                            setUserCreationAlertVisibility(false);
+                            setErrorAlertVisibility(true);
+                        })
+                })
+                .catch((error) => {
+                    console.log(error);
+                    setErrorAlertMessage('Gringotts Account could not be created');
+                    setUserCreationAlertVisibility(false);
+                    setErrorAlertVisibility(true);
+                })
+        }).catch((error) => {
+            console.log(error);
+            setErrorAlertMessage('User could not be created');
+            setUserCreationAlertVisibility(false);
+            setErrorAlertVisibility(true);
+        });
+    }
 
-  useEffect(() => {
-    dispatch(apiError(""));
-  }, [dispatch]);
+    return (
+        <div className="bg-pattern" style={{height:"100vh"}}>
+        <div className="bg-overlay"></div>
+        <div className="account-pages pt-5">
+            <Container>
+                <Row className="justify-content-center">
+                    <Col lg={6} md={8} xl={4}>
+                        <Card className='mt-5'>
+                            <CardBody className="p-4">
+                                <div className="text-center">
+                                    <Link to="/" className="">
+                                        <img src={logodark} alt="" height="24" className="auth-logo logo-dark mx-auto" />
+                                        <img src={logolight} alt="" height="24" className="auth-logo logo-light mx-auto" />
+                                    </Link>
+                                </div>
 
-  return (
-    <div className="bg-pattern" style={{height:"100vh"}}>
-    <div className="bg-overlay"></div>
-    <div className="account-pages pt-5">
-        <Container>
-            <Row className="justify-content-center">
-                <Col lg={6} md={8} xl={4}>
-                    <Card className='mt-5'>
-                        <CardBody className="p-4">
-                            <div className="text-center">
-                                <Link to="/" className="">
-                                    <img src={logodark} alt="" height="24" className="auth-logo logo-dark mx-auto" />
-                                    <img src={logolight} alt="" height="24" className="auth-logo logo-light mx-auto" />
-                                </Link>
-                            </div>
+                                <Form
+                                    className="form-horizontal"
+                                    onSubmit={handleSubmit}
+                                    >
+                                    {errorAlertVisibility ? (
+                                        <Alert color="danger">
+                                            {'ERROR:' + errorAlertMessage}
+                                        </Alert>
+                                    ) : null}
 
-                            <Form
-                                className="form-horizontal"
-                                onSubmit={(e) => {
-                                    e.preventDefault();
-                                    validation.handleSubmit();
-                                    return false;
-                                }}
-                                >
-                                {user && user ? (
-                                    <Alert color="success">
-                                    Register User Successfully
-                                    </Alert>
-                                ) : null}
+                                    {userCreationAlertVisibility ? (
+                                        <Alert color="info">
+                                            {'Please wait, user & bank accounts are being created...'}
+                                        </Alert>
+                                    ) : null}
 
-                                {registrationError && registrationError ? (
-                                    <Alert color="danger"><div>{registrationError}</div></Alert>
-                                ) : null}
+                                    <Row>
+                                        <Col md={12}>
+                                            <div className="mb-4">
+                                            <Label className="form-label">Email</Label>
+                                                <Input
+                                                name="email"
+                                                type="text"
+                                                placeholder="Enter your email"
+                                                onChange={handleInputChange}
+                                                value={emailText}
+                                                invalid={emailInvalid}
+                                                />
+                                            </div>
+                                            <div className="mb-4">
+                                            <Label className="form-label">First Name</Label>
+                                                <Input
+                                                name="firstname"
+                                                type="text"
+                                                placeholder="Enter your first name"
+                                                onChange={handleInputChange}
+                                                value={firstNameText}
+                                                />
+                                            </div>
+                                            <div className="mb-4">
+                                            <Label className="form-label">Last Name</Label>
+                                                <Input
+                                                name="lastname"
+                                                type="text"
+                                                placeholder="Enter your last name"
+                                                onChange={handleInputChange}
+                                                value={lastNameText}
+                                                />
+                                            </div>
+                                            <div className="mb-4">
+                                            <Label className="form-label">Password</Label>
+                                                <Input
+                                                name="password"
+                                                type="password"
+                                                placeholder="Enter your password"
+                                                onChange={handleInputChange}
+                                                value={passwordText}
+                                                />
+                                            </div>
+                                            <div className="mb-4">
+                                            <Label className="form-label">Confirm Password</Label>
+                                                <Input
+                                                name="confirmpassword"
+                                                type="password"
+                                                placeholder="Enter your password"
+                                                onChange={handleInputChange}
+                                                value={confirmPasswordText}
+                                                invalid={confirmPasswordInvalid}
+                                                />
+                                            </div>
 
-                                <Row>
-                                    <Col md={12}>
-                                        <div className="mb-4">
-                                        <Label className="form-label">Email</Label>
-                                            <Input
-                                            id="email"
-                                            name="email"
-                                            className="form-control"
-                                            placeholder="Enter email"
-                                            type="email"
-                                            onChange={validation.handleChange}
-                                            onBlur={validation.handleBlur}
-                                            value={validation.values.email || ""}
-                                            invalid={
-                                                validation.touched.email && validation.errors.email ? true : false
-                                            }
-                                            />
-                                            {validation.touched.email && validation.errors.email ? (
-                                            <FormFeedback type="invalid"><div>{validation.errors.email}</div></FormFeedback>
-                                            ) : null}
-                                        </div>
-                                        <div className="mb-4">
-                                        <Label className="form-label">Username</Label>
-                                            <Input
-                                            name="username"
-                                            type="text"
-                                            placeholder="Enter username"
-                                            onChange={validation.handleChange}
-                                            onBlur={validation.handleBlur}
-                                            value={validation.values.username || ""}
-                                            invalid={
-                                                validation.touched.username && validation.errors.username ? true : false
-                                            }
-                                            />
-                                            {validation.touched.username && validation.errors.username ? (
-                                            <FormFeedback type="invalid"><div>{validation.errors.username}</div></FormFeedback>
-                                            ) : null}
-                                        </div>
-                                        <div className="mb-4">
-                                        <Label className="form-label">Password</Label>
-                                            <Input
-                                            name="password"
-                                            type="password"
-                                            placeholder="Enter Password"
-                                            onChange={validation.handleChange}
-                                            onBlur={validation.handleBlur}
-                                            value={validation.values.password || ""}
-                                            invalid={
-                                                validation.touched.password && validation.errors.password ? true : false
-                                            }
-                                            />
-                                            {validation.touched.password && validation.errors.password ? (
-                                            <FormFeedback type="invalid"><div>{validation.errors.password}</div></FormFeedback>
-                                            ) : null}
-                                        </div>
-                                        <div className="form-check">
-                                            <input type="checkbox" className="form-check-input" id="term-conditionCheck" />
-                                            <label className="form-check-label fw-normal" htmlFor="term-conditionCheck">I accept the Terms and Conditions</label>
-                                        </div>
-                                        <div className="d-grid mt-4">
-                                            <button className="btn btn-primary waves-effect waves-light" type="submit">Register</button>
-                                        </div>
-                                    </Col>
-                                </Row>
-                            </Form>
-                        </CardBody>
-                    </Card>
-                    <div className="mt-5 text-center">
-                        <p className="text-white-50">Already have an account ?<Link to="/login" className="fw-medium text-primary"> Login </Link> </p>
-                        <p className="text-white-50">
-                © {new Date().getFullYear()} Lentes de Moda
-              </p>
-                    </div>
-                </Col>
-            </Row>
-        </Container>
+                                            <Row style={{marginLeft: 'auto', marginRight: '0.5rem'}}>
+                                                { submitButtonVisibility ?
+                                                    <Button className="d-grid mt-4" color="success" style={{width: 'auto', margin: '0.5rem'}} onClick={() => handleSubmit()}>
+                                                        Register
+                                                    </Button> :
+                                                    <Button className="d-grid mt-4" color='info' style={{width: 'auto', margin: '0.5rem'}}>
+                                                        <Link to="/login" className="fw-medium" style={{color: '#FFFFFF'}}> Log In </Link>
+                                                    </Button>
+                                                     }
+                                            </Row>
+                                            
+                                        </Col>
+                                    </Row>
+                                </Form>
+                            </CardBody>
+                        </Card>
+                    </Col>
+                </Row>
+            </Container>
+        </div>
     </div>
-</div>
-  );
+    );
 };
 
 export default Register;

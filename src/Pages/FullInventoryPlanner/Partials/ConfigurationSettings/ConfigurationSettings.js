@@ -157,52 +157,87 @@ const ConfigurationSettings = () => {
         setDrp_Status(drp_Status);
     }
 
-    return (
-        <div>
-            <Col className='marginsOptions'>
-                <h6 className='autoWidth'>Select a Store: </h6>
-                <ButtonDropdown
-                    isOpen={drp_secondary_sm_store}
-                    toggle={() => setDrp_secondary_sm_store(!drp_secondary_sm_store)}
-                    className='buttonDropdown autoWidth'
-                >
+    function turnOffAll(){
+        dataSQLQuery.forEach((data, index) => {
+            dataSQLQuery[index]["Active"] = 'No';
+            dropdownStatusText[index] = 'Off';
+            dropdownColor[index] = 'danger'
+        })
 
-                    <DropdownToggle
-                        caret
-                        color="white"
-                        className="btn btn-outline-info"
+        setDropdownStatusText(dropdownStatusText);
+        setDropdownColor(dropdownColor);
+        setDataSQLQuery(dataSQLQuery);
+        setVisibleConfirmChangesButton(true);
+    }
+
+    function turnOnAll(){
+        dataSQLQuery.forEach((data, index) => {
+            dataSQLQuery[index]["Active"] = 'Sí';
+            dropdownStatusText[index] = 'On';
+            dropdownColor[index] = 'info'
+        })
+
+        setDropdownStatusText(dropdownStatusText);
+        setDropdownColor(dropdownColor);
+        setDataSQLQuery(dataSQLQuery);
+        setVisibleConfirmChangesButton(true);
+    }
+
+    return (
+        <Col id='Configuration Settings'>
+            <Row id='Data Editing Section' className='marginsOptions'>
+                <div id='Store Selection' className="autoHeight autoWidth">
+                    <h6 className='autoWidth'>Select a Store: </h6>
+                    <ButtonDropdown
+                        isOpen={drp_secondary_sm_store}
+                        toggle={() => setDrp_secondary_sm_store(!drp_secondary_sm_store)}
+                        className='buttonDropdown autoWidth'
                     >
-                        <Row>
+                        <DropdownToggle
+                            caret
+                            color="white"
+                            className="btn btn-outline-info"
+                        >
                             <p className="autoHeight autoWidth">{dropdownStoreText + "   "}
                                 <i className="mdi mdi-chevron-down autoWidth"/>
                             </p>
-                        </Row>
-                    </DropdownToggle>
+                        </DropdownToggle>
 
-                    <DropdownMenu>
-                        <DropdownItem default onClick={() => StoreSelector("Optioutlet", 1)}>Optioutlet</DropdownItem>
-                        <DropdownItem divider />
-                        <DropdownItem onClick={() => StoreSelector("Lentes de Moda", 2)}>Lentes de Moda</DropdownItem>
-                        <DropdownItem divider />
-                        <DropdownItem onClick={() => StoreSelector("Todo Para Rodar", 3)}>Todo para Rodar</DropdownItem>
-                        <DropdownItem divider />
-                        <DropdownItem onClick={() => StoreSelector("Gliz Vosley", 4)}>Gliz Vosley</DropdownItem>
-                        <DropdownItem divider />
-                        <DropdownItem onClick={() => StoreSelector("MUSA Skateboard", 5)}>MUSA Skateboard</DropdownItem>
-                        <DropdownItem divider />
-                        <DropdownItem className='italicText' onClick={() => StoreSelector("All of Above", 0)}>All of Above</DropdownItem>
-                    </DropdownMenu>
-                </ButtonDropdown>
+                        <DropdownMenu>
+                            <DropdownItem default onClick={() => StoreSelector("Optioutlet", 1)}>Optioutlet</DropdownItem>
+                            <DropdownItem divider />
+                            <DropdownItem onClick={() => StoreSelector("Lentes de Moda", 2)}>Lentes de Moda</DropdownItem>
+                            <DropdownItem divider />
+                            <DropdownItem onClick={() => StoreSelector("Todo Para Rodar", 3)}>Todo para Rodar</DropdownItem>
+                            <DropdownItem divider />
+                            <DropdownItem onClick={() => StoreSelector("Gliz Vosley", 4)}>Gliz Vosley</DropdownItem>
+                            <DropdownItem divider />
+                            <DropdownItem onClick={() => StoreSelector("MUSA Skateboard", 5)}>MUSA Skateboard</DropdownItem>
+                            <DropdownItem divider />
+                            <DropdownItem className='italicText' onClick={() => StoreSelector("All of Above", 0)}>All of Above</DropdownItem>
+                        </DropdownMenu>
+                    </ButtonDropdown>
+                </div>
+                
+                <div id='Turn Off All Button' className="justify-content-end autoHeight autoWidth marginTop">
+                    <Button id='Turn Off All Button' color='danger' classname='autoHeight autoWidth' onClick={()=>turnOffAll()}>
+                        Turn Off All
+                    </Button>
+                    <Button id='Turn On All Button' color='info' classname='autoHeight autoWidth' onClick={()=>turnOnAll()}>
+                        Turn On All
+                    </Button>
+                </div>
+            </Row>
 
-                <br/>
+            <br/>
 
-                {visibleConfirmChangesButton ? 
-                    <div className='d-flex justify-content-end'>
-                        <Button className='autoWidth' color='primary' onClick={() => confirmChanges()}>Confirm</Button>
-                    </div>
-                : ""}
-            </Col>
-            <div className="table-responsive table-card mt-3 mb-1">
+            {visibleConfirmChangesButton ? 
+                <div id='Confirm Changes Button' className='d-flex justify-content-end marginsOptions'>
+                    <Button className='autoWidth' color='primary' onClick={() => confirmChanges()}>Confirm</Button>
+                </div>
+            : ""}
+            
+            <div id='Data Display' className="table-responsive table-card mt-3 mb-1">
                 <table className="table align-middle table-nowrap" id="customerTable">
                     <thead className="table-light">
                         <tr>
@@ -259,7 +294,7 @@ const ConfigurationSettings = () => {
 
             <br/>
             
-        </div>
+        </Col>
     )
 }
 

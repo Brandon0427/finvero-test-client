@@ -67,25 +67,153 @@ const LatestTransationData = [
 const OrderStatusData = [
     {
         id: 1,
-        title: "Completed",
+        title: "Transport & Travel",
         icon: "ri-checkbox-circle-line",
         color: "success",
         width: "70",
     },
     {
         id: 2,
-        title: "Pending",
-        icon: "ri-calendar-2-line",
+        title: "Food & Groceries",
+        icon: "Personal Shopping",
         color: "warning",
         width: "45",
     },
     {
         id: 3,
-        title: "Cancel",
+        title: "Online Platforms & Leisure",
         icon: "ri-close-circle-line",
         color: "danger",
         width: "19",
     },
+    {
+        id: 4,
+        title: "Home & Life",
+        icon: "ri-close-circle-line",
+        color: "danger",
+        width: "19",
+    },
+]
+
+const PersonalExpensesData = [
+    {
+        id: 1,
+        title: "Food & Groceries",
+        icon: "bx bx-cookie",
+        color: "info",
+        width: 45,
+        total: 500
+    },
+    {
+        id: 2,
+        title: "Home & Life",
+        icon: "bx bx-home-smile",
+        color: "info",
+        width: 19,
+        total: 500
+    },
+    {
+        id: 3,
+        title: "Online Platforms & Leisure",
+        icon: "bx bxs-t-shirt",
+        color: "info",
+        width: 19,
+        total: 500
+    },
+    {
+        id: 4,
+        title: "Transport & Travel",
+        icon: "mdi mdi-car",
+        color: "info",
+        width: 70,
+        total: 500
+    },
+    {
+        id: 5,
+        title: "Other",
+        icon: "bx bx-outline",
+        color: "warning",
+        width: 19,
+        total: 500
+    },
+]
+
+const FinancialTransactionsData = [
+    {
+        id: 1,
+        title: "Deposits",
+        icon: "mdi mdi-account-arrow-left",
+        color: "success",
+        width: "70",
+        total: 501
+    },
+    {
+        id: 2,
+        title: "Income & Payments",
+        icon: "fas fa-money-check-alt",
+        color: "success",
+        width: "45",
+        total: 501
+    },
+    {
+        id: 3,
+        title: "Investments & Savings",
+        icon: "mdi mdi-finance",
+        color: "success",
+        width: "19",
+        total: 501
+    },
+    {
+        id: 4,
+        title: "Transfers",
+        icon: "mdi mdi-swap-horizontal",
+        color: "success",
+        width: "19",
+        total: 501
+    },
+    {
+        id: 5,
+        title: "Withdrawal & ATM",
+        icon: "bx bx-money",
+        color: "success",
+        width: "19",
+        total: 501
+    },
+]
+
+const FinancialObligationsData = [
+    {
+        id: 1,
+        title: "Bills & Utilities",
+        icon: "mdi mdi-file-document-multiple-outline",
+        color: "danger",
+        width: "70",
+        total: 502
+    },
+    {
+        id: 2,
+        title: "Credits & Loans",
+        icon: "bx bx-credit-card",
+        color: "danger",
+        width: "45",
+        total: 502
+    },
+    {
+        id: 3,
+        title: "Fees & Charges",
+        icon: "dripicons-tag",
+        color: "danger",
+        width: "19",
+        total: 502
+    },
+    {
+        id: 4,
+        title: "Taxes",
+        icon: "bx bx-wallet",
+        color: "danger",
+        width: "19",
+        total: 502
+    }
 ]
 
 // Overview
@@ -93,23 +221,17 @@ const OrderStatusData = [
 const OverViewData = [
     {
         id: 1,
-        title: "Expenses",
-        count: "8,524",
-        percentage: "1.2",
+        title: "Inflow",
         color: "primary"
     },
     {
         id: 2,
-        title: "Maintenance",
-        count: "8,524",
-        percentage: "2.0",
-        color: "light"
+        title: "Total",
+        color: "info"
     },
     {
         id: 3,
-        title: "Profit",
-        count: "8,524",
-        percentage: "0.4",
+        title: "Outflow",
         color: "danger"
     },
 ];
@@ -180,4 +302,4 @@ const NotificationsData = [
 ];
 
 
-export { LatestTransationData, OrderStatusData, OverViewData, SocialSourceData, NotificationsData }
+export { LatestTransationData, OrderStatusData, OverViewData, SocialSourceData, NotificationsData, PersonalExpensesData, FinancialTransactionsData, FinancialObligationsData }

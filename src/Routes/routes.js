@@ -103,16 +103,27 @@ import GoogleMap from "../Pages/Maps/GoogleMap";
 
 
 const authProtectedRoutes = [
+
+  // this route should be at the end of all other routes
+  // eslint-disable-next-line react/display-name
+  {
+    path: "/",
+    exact: true,
+    component: <Navigate to="/login" />,
+  },
+
+];
+
+const publicRoutes = [
   // Dashboard
   { path: "/dashboard", component: <Dashboard /> },
 
-  // Purchaseorders
-  // { path: "/purchase-orders", component: <PurchaseOrders /> },
-  // { path: "/purchase-orders/:title/:poID/:id", component: <IndividualPO />},
+  //Purchaseorders
+  { path: "/purchase-orders", component: <PurchaseOrders /> },
+  { path: "/purchase-orders/:title/:poID/:id", component: <IndividualPO />},
 
-  // Full Inventory Planner
-  // { path: "/full-inventory-planner", component: <FullInventoryPlanner />},
-
+  //Full Inventory Planner
+  { path: "/full-inventory-planner", component: <FullInventoryPlanner />},
 
   // Calender
   { path: "/calendar", component: <Calender /> },
@@ -183,28 +194,12 @@ const authProtectedRoutes = [
   { path: "/icons-materialdesign", component: <IconMaterialdesign /> },
   { path: "/icons-fontawesome", component: <IconFontawesome /> },
   { path: "/icon-dripicons", component: <IconDripicons /> },
+  
+    // Maps Pages
+    { path: "/maps-vector", component: <VectorMaps /> },
+    { path: "/maps-google", component: <GoogleMap /> },
 
-  // Maps Pages
-  { path: "/maps-vector", component: <VectorMaps /> },
-  { path: "/maps-google", component: <GoogleMap /> },
-
-  // this route should be at the end of all other routes
-  // eslint-disable-next-line react/display-name
-  // {
-  //   path: "/",
-  //   exact: true,
-  //   component: <Navigate to="/dashboard" />,
-  // },
-
-  // {
-  //   path: "/",
-  //   exact: true,
-  //   component: <Navigate to="/full-inventory-planner" />,
-  // },
-];
-
-const publicRoutes = [
-
+  //From here should
   // Authentication Page
   { path: "/logout", component: <Logout /> },
   { path: "/login", component: <Login /> },
@@ -223,20 +218,12 @@ const publicRoutes = [
   { path: "/pages-maintenance", component: <Maintenance /> },
   { path: "/pages-comingsoon", component: <ComingSoon /> },
 
-  // These routes should be private, but login validation methods are not stated yet
-  // Purchaseorders
-  { path: "/purchase-orders", component: <PurchaseOrders /> },
-  { path: "/purchase-orders/:title/:poID/:id", component: <IndividualPO />},
-
-  // // Full Inventory Planner
-  { path: "/full-inventory-planner", component: <FullInventoryPlanner />},
-
-  //Home Redirecting
-  {
-    path: "/",
-    exact: true,
-    component: <Navigate to="/full-inventory-planner" />,
-  }
+  // //Home Redirecting
+  // {
+  //   path: "/",
+  //   exact: true,
+  //   component: <Navigate to="/full-inventory-planner" />,
+  // }
 ];
 
 export { authProtectedRoutes, publicRoutes };
